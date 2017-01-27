@@ -331,6 +331,15 @@
                                                         כולל ביטולים
                                             </label>
                                         </a>
+                                        <%--changed by ortal&nofar--%>
+                                        <a href="#" data-ng-click="search.docIncClosed=!search.docIncClosed"><span class="glyphicon"
+                                            data-ng-class="{'glyphicon-check':search.docIncClosed,'glyphicon-unchecked':!search.docIncClosed}"></span>
+                                            <label>
+                                                &nbsp;
+                                                        כולל סגורים
+                                            </label>
+                                        </a>
+                                        <%--end--%>
                                     </td>
                                     <td style="width: 5%">
                                         <a href="#" class="pull-left" data-ng-click="resetDocumentFilters()" data-ng-show="isDocFiltered()">

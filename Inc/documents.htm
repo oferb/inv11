@@ -18,7 +18,7 @@
                         <thead>
                             <tr>
                                 <th style="width:30px;" title="הורדה בקובץ יחיד לחשבשבת">ח</th>
-                                <th style="width:30px; align-self:center;" data-ng-if="search.docType==11"><span data-ng-if="search.docType==11" title="בחר" align="center" class="glyphicon glyphicon-check"></span></th>
+                                <th style="width:30px; align-self:center;" data-ng-if="search.docType==8 || search.docType==12"><span data-ng-if="search.docType==11" title="בחר" align="center" class="glyphicon glyphicon-check"></span></th>
                                 <th data-ng-if="search.docType==11 || search.docType==12"><span data-ng-if="search.docType==11 || search.docType==12" title="הרחב" class="glyphicon glyphicon-plus"></span></th>
                                 <th><span data-ng-click="changeSorting(docSort,'Id')"><span data-ng-class="selectedCls(docSort,'Id')"></span><a href="#">מס</a></span></th>
                                 <th><span data-ng-click="changeSorting(docSort,'DocumentNumber')"><span data-ng-class="selectedCls(docSort,'DocumentNumber')"></span><a href="#">מס' סידורי</a></span></th>
@@ -40,11 +40,13 @@
                                         <span class="mif-file-download mif-2x" title="הורדה בקובץ יחיד לחשבשבת"></span>
                                     </a>
                                 </td>
-                                <!--checkbox-->
+                                <!--checkbox changed by ortal&nofar-->
+                                <td data-ng-if="search.docType==8">
+                                    <input type="checkbox" data-ng-model="docCheckBoxSC" data-ng-if="p.DocumentType==8" data-ng-change="linesToSC(docCheckBoxSC,p)" ng-checked="{{p.isCheckd}}">
+                                </td>
                                 <td data-ng-if="search.docType==11">
                                     <input type="checkbox" data-ng-model="docCheckBox" data-ng-if="p.DocumentType==11" data-ng-change="linesToInvoice(docCheckBox,p)" ng-checked="{{p.isCheckd}}">
-
-                                </td>
+                                </td>                                
                                 <td data-ng-if="search.docType==11 || search.docType==12">
                                     <span data-ng-class="DocListOpen ? 'glyphicon glyphicon-minus' : 'glyphicon glyphicon-plus'" data-ng-if="p.DocumentType==11 || p.DocumentType==12"
                                           data-ng-show="p.isClosed" data-ng-click="openDocLines(p.Id)"></span><!--|| dtpin(p.documenttype,[5,7,8]-->
@@ -52,6 +54,7 @@
                                        data-ng-show="!p.IsDraft && dtpIn(p.DocumentType,[1,2,3])" data-ng-if="p.DocumentType==11 || p.DocumentType==12">
                                     </a>
                                 </td>
+                                <!--end-->
                                 <td>{{p.Id}}</td>
                                 <td>{{p.DocumentNumber}}</td>
                                 <td>{{p.DocumentN}}</td>

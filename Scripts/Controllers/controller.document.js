@@ -1219,20 +1219,53 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
         $scope.addNewDocItems(doc);
     }
 
-
+    
 
     //changed by #ortal&nofar#
-    $scope.linesToInvoice = function (value, p) {
-        if (!$scope.idsToShow)
-            $scope.idsToShow = [];
+    $scope.linesToSC = function (value, p) {
+        if (!$scope.idsToShowSC)
+            $scope.idsToShowSC = [];
         if (value) {
-            $scope.idsToShow.push(p);
+            $scope.idsToShowSC.push(p);
             p.isCheckd = true;
         }
         else {
-            index = $scope.idsToShow.indexOf(p);
+            index = $scope.idsToShowSC.indexOf(p);
             if (index > -1) {
-                $scope.idsToShow.splice(index, 1);
+                $scope.idsToShowSC.splice(index, 1);
+                p.isCheckd = false;
+            }
+
+        }
+    };
+    //changed by #ortal&nofar# //for index
+    $scope.linesToSCSel = function () {
+        if ($scope.idsToShowHC) {
+            ar = $scope.idsToShowHC;
+            return ar.length;
+        }
+
+    };
+
+    //changed by #ortal&nofar# //sending checked files to create invoice
+    $scope.sendToSC = function () {
+        ar = $scope.idsToShowHC;
+        $scope.showPage(11);
+        $scope.setDocType(12);
+
+    };
+    //changed by #ortal&nofar#
+    $scope.linesToInvoice = function (value, p) {
+        if (!$scope.idsToShowHC)
+            $scope.idsToShowHC = [];
+        if (value) {
+            $scope.idsToShowHC.push(p);
+            p.isCheckd = true;
+        }
+        else {
+            index = $scope.idsToShowHC.indexOf(p);
+            if (index > -1) {
+                $scope.idsToShowHC.splice(index, 1);
                 p.isCheckd = false;
             }
 
@@ -1240,8 +1273,8 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
     };
     //changed by #ortal&nofar# //for index
     $scope.linesToInvoiceSel = function () {
-        if ($scope.idsToShow) {
-            ar = $scope.idsToShow;
+        if ($scope.idsToShowHC) {
+            ar = $scope.idsToShowHC;
             return ar.length;
         }
 
@@ -1249,7 +1282,7 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
 
     //changed by #ortal&nofar# //sending checked files to create invoice
     $scope.sendToInvoice = function () {
-        ar = $scope.idsToShow;
+        ar = $scope.idsToShowHC;
         $scope.showPage(11);
         $scope.setDocType(12);
 
@@ -1258,10 +1291,10 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
     //changed by #ortal&nofar#
     $scope.getSumOfShippingCertificates = function () {
         var total = 0;
-        if (!$scope.idsToShow)
+        if (!$scope.idsToShowHC)
             return 0;
-        for (var i = 0; i < $scope.idsToShow.length; i++) {
-            total += $scope.idsToShow[i].Total;
+        for (var i = 0; i < $scope.idsToShowHC.length; i++) {
+            total += $scope.idsToShowHC[i].Total;
         }
         return total;
     };
