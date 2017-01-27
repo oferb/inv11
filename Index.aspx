@@ -302,14 +302,14 @@
                         <div class="row tm-panel well inv-top-links" style="height: 47px; padding-right: 15px; min-width: 1140px">
                             <table style="min-width: 1115px">
                                 <tr>
-                                    <td style="width: 12%">
+                                    <td style="width: 13%">
                                         <ul class="nav nav-pills nav-pills-sm">
                                             <li data-ng-class="{'active':search.docCat==0}" data-ng-click="search.docCat=0"><a href="#">הכל</a></li>
                                             <li data-ng-class="{'active':search.docCat==1}" data-ng-click="search.docCat=1"><a href="#">מסמכים</a></li>
                                             <li data-ng-class="{'active':search.docCat==2}" data-ng-click="search.docCat=2"><a href="#">טיוטות</a></li>
                                         </ul>
                                     </td>
-                                    <td style="width: 38%">
+                                    <td style="width: 37%">
                                         <div vdaterange class="sm-datetange"></div>
                                     </td>
                                     <td style="width: 16%">
@@ -318,30 +318,32 @@
                                             <option value="0" title="כל הלקוחות" selected="selected">כל הלקוחות</option>
                                         </select>
                                     </td>
-                                    <td style="width: 16%">
+                                    <td style="width: 14%">
                                         <select id="selType1" class="selectpicker" data-style="btn-primary btn-sm" data-selected-text-format="count">
                                             <option value="0" title="כל סוגי המסמכים" selected="selected">כל סוגי המסמכים</option>
                                         </select>
                                     </td>
-                                    <td style="width: 13%">
+                                    <td style="width: 16%; text-align:center;">&nbsp;
                                         <a href="#" data-ng-click="search.docIncCanceled=!search.docIncCanceled"><span class="glyphicon"
-                                            data-ng-class="{'glyphicon-check':search.docIncCanceled,'glyphicon-unchecked':!search.docIncCanceled}"></span>
-                                            <label>
+                                            data-ng-class="{'glyphicon-check':search.docIncCanceled,'glyphicon-unchecked':!search.docIncCanceled}" style=" vertical-align: central;"></span>
+                                            <label style="text-align:center;">
+                                                
+                                                        כולל 
+                                                <br />ביטולים
                                                 &nbsp;
-                                                        כולל ביטולים
                                             </label>
                                         </a>
-                                        <%--changed by ortal&nofar--%>
-                                        <a href="#" data-ng-click="search.docIncClosed=!search.docIncClosed"><span class="glyphicon"
+                                                                            <%--changed by ortal&nofar--%>
+                                        <a href="#" data-ng-if="search.docType==8 || search.docType==11 || search.docType==12" 
+                                            data-ng-click="search.docIncClosed=!search.docIncClosed"><span class="glyphicon"
                                             data-ng-class="{'glyphicon-check':search.docIncClosed,'glyphicon-unchecked':!search.docIncClosed}"></span>
                                             <label>
-                                                &nbsp;
                                                         כולל סגורים
                                             </label>
                                         </a>
                                         <%--end--%>
                                     </td>
-                                    <td style="width: 5%">
+                                    <td style="width: 4%">
                                         <a href="#" class="pull-left" data-ng-click="resetDocumentFilters()" data-ng-show="isDocFiltered()">
                                             <span class="mif-cancel mif-2x" title="בטל סינון" style="vertical-align: middle"></span>
                                         </a>
