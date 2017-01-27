@@ -1,0 +1,108 @@
+﻿[
+    {
+        "Start": 0,
+        "End": 2,
+        "Key": "Code"//קוד סוג תנועה
+    },
+    {
+        "Start": 4,
+        "End": 12,
+        "Key": "Reference1"//אסמכתא 1
+    },
+    {
+        "Start": 14,
+        "End": 22,
+        "Key": "Reference2"//אסמכתא 2
+    },
+    {
+        "Start": 24,
+        "End": 33,
+        "Key": "ReferenceDate"//תאריך אסמכתא
+    },
+    {
+        "Start": 35,
+        "End": 44,
+        "Key": "TargetDate"//תאריך ערך
+    },
+    {
+        "Start": 46,
+        "End": 50,
+        "Key": "CurrencyCode"//קוד מטבע
+    },
+    {
+        "Start": 52,
+        "End": 101,
+        "Key": "Comments" //פרטים
+    },
+    {
+        "Start": 103,
+        "End": 117,
+        "Key": "DebitAccountKey1" //מפתח חשבון חובה 1
+    },
+    {
+        "Start": 119,
+        "End": 133,
+        "Key": "DebitAccountKey2" //מפתח חשבון חובה 2
+    },
+    {
+        "Start": 135,
+        "End": 149,
+        "Key": "CreditAccountKey1" //מפתח חשבון זכות 1
+    },
+    {
+        "Start": 151,
+        "End": 165,
+        "Key": "CreditAccountKey2" //מפתח חשבון זכות 2
+    },
+    {
+        "Start": 167,
+        "End": 178,
+        "Key": "DebitSum1" //סכום חובה 1 בש"ח
+    },
+    {
+        "Start": 180,
+        "End": 191,
+        "Key": "DebitSum2" //סכום חובה 2 בש"ח
+    },
+    {
+        "Start": 193,
+        "End": 204,
+        "Key": "CreditSum1" //סכום זכות 1 בש"ח
+    },
+    {
+        "Start": 206,
+        "End": 217,
+        "Key": "CreditSum2" //סכום זכות 2 בש"ח
+    },
+    {
+        "Start": 219,
+        "End": 230,
+        "Key": "ForeignDebitSum1" //סכום חובה 1 במט"ח
+    },
+    {
+        "Start": 232,
+        "End": 243,
+        "Key": "ForeignDebitSum2" //סכום חובה 2 במט"ח
+    },
+    {
+        "Start": 245,
+        "End": 256,
+        "Key": "ForeignCreditSum1" //סכום זכות 1 במט"ח
+    },
+    {
+        "Start": 258,
+        "End": 269,
+        "Key": "ForeignCreditSum2" //סכום זכות 2 במט"ח
+    },
+    {
+        "Start": 271,
+        "End": 320,
+        "Key": "File" //קובץ
+    },
+    {
+        "Start": 322,
+        "End": 330,
+        "Key": "AutorizationCompanyId"//מספר עוסק מורשה
+    }
+
+]

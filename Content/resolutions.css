@@ -1,0 +1,44 @@
+﻿
+.inv-top-links{
+    width:1140px;
+    margin: 0px auto;
+}
+.sm-datetange input
+{
+    padding: 0px 7px 0px 0px!important;
+}
+.inv-lg-r{
+     display:none;
+ }
+
+@media (max-width: 1200px) {
+  /* CSS that should be displayed if width is equal to or less than 1220px goes here */
+ .inv-top-links{
+    width:980px;
+  }
+ .inv-1200{
+     display:none;
+ }
+}
+
+
+@media (max-width: 1024px) {
+  /* CSS that should be displayed if width is equal to or less than 1220px goes here */
+ .inv-top-links{
+    width:980px;
+  }
+ .inv-lg{
+     display:none;
+ }
+ .inv-lg-r{
+     display:inline-block;
+ }
+}
+
+
+@media (max-width: 768px) {
+  /* CSS that should be displayed if width is equal to or less than 1220px goes here */
+ .inv-top-links{
+    width:740px;
+  }
+}

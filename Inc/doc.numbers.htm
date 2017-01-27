@@ -1,0 +1,88 @@
+﻿<form class="form-horizontal" novalidate action="javascript:UpdateDocConfig()">
+    <fieldset>   
+        <!-- subtitle -->
+        <div class="alert alert-dismissible alert-info h-info container-fluid">
+            <div class="row-fluid">
+                <h3 class="pull-right">{{newDoc.Company.Name}}</h3>
+            </div>
+        </div>           
+        <!-- tabs panel -->
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#allDocNumeration" data-toggle="tab"
+                   data-ng-click="tabItemCardClick($event)">מספור מסמכים</a>
+            </li>
+            <li class="pull-left" data-ng-show="isChangedDocConfig(null)">
+                <span class="label label-warning w-not-saved">לא שמור</span>
+            </li>
+        </ul>
+
+        <div class="col-md-12 tab-content">
+            <div class="alert alert-warning tm-panel" data-ng-show="userCompanies.length==0">
+                <p style="text-align:center">
+                    לא ניתן להגדיר מספור מסמכים ליפני
+                    <a href="#" data-ng-click="showPage(42)">הוספת בית עסק</a>
+                </p>
+            </div>
+            <section data-ng-show="userCompanies.length>0">
+                <!-- card page -->
+                <div class="tab-pane fade in active" id="allDocNumeration">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">מס</th>
+                                <th>סוג המסמך</th>
+                                <th style="width:15%">מספר ראשון</th>
+                                <th style="width:15%">מספר אחרון</th>
+                                <th style="width:10%">סטטוס</th>
+                            </tr>
+                        </thead>
+                        <tbody class="dec-pad">
+                            <tr data-ng-repeat="x in docConfig | filter: {CompanyID: search.docCompany}" data-ng-class="{'has-warning':isChangedDocConfig(x)}">
+                                <td>{{x.Id}}</td>
+                                <td>{{x.Name}}</td>
+                                <td>
+                                    <input type="number" class="form-control input-sm num-integer" data-ng-model="x.Start" min="1" step="1" pattern="\d*"
+                                           data-ng-readonly="x.Last>0">
+                                </td>
+                                <td><input type="number" class="form-control input-sm" data-ng-model="x.Last" readonly="readonly"></td>
+                                <td><span class="mif-lock mif-2x" style="color: #c81d23;" title="נהול" data-ng-show="x.Last>0"></span><span class="mif-unlock mif-2x" style="color: #b6b6b6;" title="לא נהול" data-ng-show="x.Last==0"></span></td>
+                                <!--<td><input type="checkbox" data-ng-model="x.IsActive" data-ng-change="changeDocActive(x.Id)"></td>-->
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <!-- card buttons -->
+                <div>
+                    <hr />
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary btn-large" data-ng-click="submitted=true;" data-ng-show="newDoc.Company.IsLocked==null || !newDoc.Company.IsLocked">
+                                שמירה
+                            </button>
+                            <button type="button" class="btn btn-warning btn-large" data-ng-click="resetDocConfig()" data-ng-show="isChangedDocConfig(null)">
+                                איתחול
+                            </button>
+                        </div>
+                        <div class="col-md-5 col-md-offset-3">
+                            <div class="alert alert-danger" data-ng-show="newDoc.Company.IsLocked==null || !newDoc.Company.IsLocked">
+                                לא ניתן להשתמש בבית עסק לפני שמירת המספור
+                            </div>
+                            <p class="text-muted pull-left" style="font-size: 12px;" data-ng-show="hasLockedDoc()">
+                                <b>הערות:</b>
+                                לא ניתן לעדכן את המספור למסמכים הנעולים
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </fieldset>
+</form>
+<script>
+
+    $().ready(function () {
+       //
+    })
+</script>

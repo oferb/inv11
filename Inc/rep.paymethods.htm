@@ -1,0 +1,81 @@
+﻿<!-- tables -->
+<div data-ng-show="userDocuments.length>0">
+    <table class="table table-striped table-hover tm-grid" data-ng-show="repFilter.Month==-1">
+        <thead>
+            <tr>
+                <th>שנה</th>
+                <th data-ng-show="search.docCustomer==0">לקוחות</th>
+                <th>צ'קים</th>
+                <th>מזומן</th>
+                <th>העברה בנקאית</th>
+                <th>אחרים</th>
+                <th>סה"כ תשלומים</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="p in repList()">
+                <td>
+                    <a href="#" data-ng-click="repFilter.Year==0 ? repFilter.Year=p : repFilter.Month=p"
+                       data-ng-show="calcRepTotal(p)>0">{{p}}</a><span data-ng-hide="calcRepTotal(p)>0">{{p}}</span>
+                </td>
+                <td data-ng-show="search.docCustomer==0">{{calcRepCustAmount(p)}}</td>
+                <td>{{calcRepDocAmount(p,1)}}</td>
+                <td>{{calcRepDocAmount(p,2)}}</td>
+                <td>{{calcRepDocAmount(p,3)}}</td>
+                <td>{{calcRepDocAmount(p,4)}}</td>
+                <td>{{calcRepTotal(p) | number : 2}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>סה"כ</th>
+                <th data-ng-show="search.docCustomer==0"></th>
+                <th>{{calcRepDocAmountT(1)}}</th>
+                <th>{{calcRepDocAmountT(2)}}</th>
+                <th>{{calcRepDocAmountT(3)}}</th>
+                <th>{{calcRepDocAmountT(4)}}</th>
+                <th>{{calcRepTotalT() | number : 2}}</th>
+            </tr>
+        </tfoot>
+    </table>
+    <!--<div>CompanyID: {{search.docCompany}}, CustomerID: {{search.docCustomer}}, Year: {{repFilter.Year}}, Month: {{months.indexOf(repFilter.Month)}}</div>-->
+    <table class="table table-striped table-hover tm-grid" data-ng-show="repFilter.Month!=-1">
+        <thead>
+            <tr>
+                <th>מס</th>
+                <th>מסמך</th>
+                <th>לקוח</th>
+                <th>סוג</th>
+                <th>תיאור</th>
+                <th>תאריך</th>
+                <th>סה"כ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-ng-repeat="p in reportData.Methods | filter: repDocFilter">
+                <td>{{p.Id}}</td>
+                <td>
+                    <a data-ng-href="{{docPreview(p)}}" target="_blank">{{p.DocumentNumber}}</a>
+                </td>
+                <td>{{getNameByID('customer',p.CustomerID)}}</td>
+                <td>{{getNameByID('method',p.TypeID)}}</td>
+                <td>{{getPayDescriptionR(p)}}</td>
+                <td>{{getDateString(p.Date)}}</td>
+                <td>{{p.Total}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>סה"כ</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>{{calcRepTotalTM()}}</th>
+            </tr>
+        </tfoot>
+    </table>
+
+</div>
+

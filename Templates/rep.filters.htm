@@ -1,0 +1,109 @@
+﻿<div class="col-md-12 tab-content" style="padding: 0px;" data-ng-show="userDocuments.length==0">
+    <!-- no results -->
+    <table style="width:100%">
+        <tr>
+            <td>
+                <div class="alert alert-warning" style="padding:9px">
+                    <p style="text-align:center">אין מסמכים</p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="alert alert-dismissible alert-info h-info container-fluid" data-ng-show="userDocuments.length>0">
+    <div class="row-fluid">
+        <div class="col-md-2 found-items pull-left" data-ng-show="isRepFiltered()">
+            <a href="#" class="pull-left" data-ng-click="resetRepFilters()">
+                <span class="mif-cancel mif-2x" title="בטל סינון" style="vertical-align: middle"></span>
+            </a>
+            <a href="#" class="pull-left" data-ng-click="repBack()" style="margin-left:10px">
+                <span class="mif-arrow-up mif-2x" title="לרמה הקודמת" style="vertical-align: middle"></span>
+            </a>
+            <a href="#" class="pull-left" data-ng-hide="isWaitingForFile==1" data-ng-click="genBKMFile()" style="margin-left:10px">
+                <span class="glyphicon glyphicon-save-file" title="צור קובץ מבנה אחיד" style="vertical-align: middle"></span>
+            </a>
+            <a href="#" class="pull-left" data-ng-hide="isWaitingForFile==1" data-ng-click="genBKMFile(1)" style="margin-left:10px">
+                <span class="glyphicon glyphicon-file" title=" צור קובץ מבנה אחיד (debug)" style="vertical-align: middle"></span>
+            </a>
+            <i class="fa fa-circle-o-notch fa-spin" data-ng-show="isWaitingForFile==1" title="מייצר קובץ ..."></i>
+        </div>
+        <h3 class="pull-right">
+            <!--<span style="margin-left:20px;margin-right:20px;">
+                {{selectedCompanyTitle()}}
+            </span>-->
+            <span style="margin-left:20px;margin-right:20px;">
+                <select id="selCustomer4" class="selectpicker" data-style="btn-primary btn-sm"
+                        data-live-search="true" data-selected-text-format="count">
+                    <option value="0" title="כל הלקוחות" selected="selected">כל הלקוחות</option>
+                </select>
+            </span>
+            <span style="margin-left:20px;">
+                <select id="selYear" class="selectpicker" data-style="btn-primary btn-sm" data-selected-text-format="count">
+                    <option value="0" title="כל השנים" selected="selected">כל השנים</option>
+                </select>
+            </span>
+            <span style ="margin-left:10px;" data-ng-show="repFilter.Year!=0">
+                <label class="control-label p-text" for="selMonth">מ-</label>
+                <span>
+                    <select id="selMonth" class="selectpicker" data-style="btn-primary btn-sm" data-selected-text-format="count">
+                        <option value="-1" title="כל החודשים" selected="selected">כל החודשים</option>
+                    </select>
+                </span>
+            </span>
+            <span style="margin-left:10px;" data-ng-show="repFilter.Month!=-1">
+                <label class="control-label p-text" for="selMonthTo">עד-</label>
+                <span>
+                    <select id="selMonthTo" class="selectpicker" data-style="btn-primary btn-sm" data-selected-text-format="count">
+                    </select>
+                </span>
+            </span>
+        </h3>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span style="color:#858585">שלח מסמך</span>:
+                <span style="margin-right:10px;margin-left:10px;">{{docToMail.DocumentN}}</span>מס'<span style="margin-right:10px;">{{docToMail.DocumentNumber}}</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <!--<legend>Legend</legend>-->
+                <form class="form-horizontal" data-ng-show="docSentStatus==0">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="inputEmail" class="col-lg-2 control-label">כתובת</label>
+                            <div class="col-lg-10">
+                                <input type="text" class="form-control" id="inputEmail" placeholder="דואר אלקטרוני" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top:10px">
+                            <label for="textArea" class="col-lg-2 control-label">הודעה</label>
+                            <div class="col-lg-10">
+                                <textarea class="form-control" rows="3" id="textBody"></textarea>
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                <div class="alert alert-dismissible alert-success" data-ng-show="docSentStatus==1" style="margin-right: 30px;margin-bottom: 10px;">
+                    נשלח בהצלחה
+                </div>
+                <div class="alert alert-dismissible alert-danger" data-ng-show="docSentStatus==2" style="margin-right: 30px;margin-bottom: 10px;">
+                    הפעולה לא הצליחה, פנה למנהל המרכת לבירור
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">סגור</button>
+                <button type="button" class="btn btn-primary" data-ng-click="sendDoc()" style="margin-left:10px" data-ng-show="docSentStatus==0">שלח</button>
+            </div>
+        </div>
+
+    </div>
+</div>

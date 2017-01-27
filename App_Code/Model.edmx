@@ -1,0 +1,873 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DBInvoiceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbBanks">
+          <Key>
+            <PropertyRef Name="Bid" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="NotInUse" Type="bit" />
+          <Property Name="Bid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DBInvoice.dbo.tbBranches' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="tbBranches">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BankID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="tbCommon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nds" Type="float" />
+          <Property Name="LastBKMId" Type="int" />
+        </EntityType>
+        <EntityType Name="tbCompanies">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="SubTitle" Type="nvarchar" MaxLength="200" />
+          <Property Name="ESubTitle" Type="nvarchar" MaxLength="200" />
+          <Property Name="Identificator" Type="nvarchar" MaxLength="50" />
+          <Property Name="Street" Type="nvarchar(max)" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="EAddress" Type="nvarchar(max)" />
+          <Property Name="Index" Type="nvarchar" MaxLength="20" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="InvName" Type="nvarchar" MaxLength="50" />
+          <Property Name="InvMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="PayName" Type="nvarchar" MaxLength="50" />
+          <Property Name="BankName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Branch" Type="nvarchar" MaxLength="50" />
+          <Property Name="Account" Type="nvarchar" MaxLength="50" />
+          <Property Name="SWIFT" Type="nvarchar" MaxLength="50" />
+          <Property Name="IBAN" Type="nvarchar" MaxLength="50" />
+          <Property Name="EPayName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EBankName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EBankAddress" Type="nvarchar(max)" />
+          <Property Name="IsArchive" Type="bit" />
+          <Property Name="Logo" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsLocked" Type="bit" />
+          <Property Name="CardExp" Type="nvarchar" MaxLength="50" />
+          <Property Name="CardNds" Type="nvarchar" MaxLength="50" />
+          <Property Name="KupatCash" Type="nvarchar" MaxLength="50" />
+          <Property Name="KupatChecks" Type="nvarchar" MaxLength="50" />
+          <Property Name="CodeA1" Type="nvarchar" MaxLength="10" />
+          <Property Name="CodeA2" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tbCompanyCustomer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="CustomerID" Type="int" />
+        </EntityType>
+        <EntityType Name="tbCustomers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="Identificator" Type="nvarchar" MaxLength="50" />
+          <Property Name="AStreet" Type="nvarchar(max)" />
+          <Property Name="ACity" Type="nvarchar" MaxLength="50" />
+          <Property Name="AIndex" Type="nvarchar" MaxLength="20" />
+          <Property Name="ACountry" Type="nvarchar" MaxLength="50" />
+          <Property Name="CName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CEmail" Type="nvarchar" MaxLength="50" />
+          <Property Name="CPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="CMobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="BankName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Branch" Type="nvarchar" MaxLength="50" />
+          <Property Name="Account" Type="nvarchar" MaxLength="50" />
+          <Property Name="PayName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsArchive" Type="bit" />
+          <Property Name="CardID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tbDocumentNumbers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="DocID" Type="int" />
+          <Property Name="Start" Type="int" />
+          <Property Name="Last" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbDocumentPayments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocID" Type="int" />
+          <Property Name="TypeID" Type="int" />
+          <Property Name="Type" Type="nvarchar" MaxLength="50" />
+          <Property Name="BankCode" Type="int" />
+          <Property Name="BranchCode" Type="int" />
+          <Property Name="Account" Type="nvarchar" MaxLength="50" />
+          <Property Name="Check" Type="nvarchar" MaxLength="50" />
+          <Property Name="Total" Type="float" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="200" />
+          <Property Name="Date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tbDocumentProducts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocumentID" Type="int" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Price" Type="float" Nullable="false" />
+          <Property Name="Amount" Type="float" Nullable="false" />
+          <Property Name="Info" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tbDocumentTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="IPCode" Type="nchar" MaxLength="10" />
+          <Property Name="IsArchive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbProducts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="Makat" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Price" Type="money" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="IsArchive" Type="bit" />
+          <Property Name="IsNew" Type="bit" />
+          <Property Name="Info" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="tbUserCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="IsArchive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbUserCustomer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="CustomerID" Type="int" />
+          <Property Name="IsArchive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbUserDocuments">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="DocumentType" Type="int" />
+          <Property Name="DocumentNumber" Type="int" />
+          <Property Name="CreationDate" Type="datetime" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="DueDate" Type="datetime" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="CompanyIdentificator" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompanyName" Type="nvarchar" MaxLength="200" />
+          <Property Name="CompanyAddress" Type="nvarchar" MaxLength="200" />
+          <Property Name="CompanyPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="CompanyMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerID" Type="int" />
+          <Property Name="CustomerIdentificator" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerName" Type="nvarchar" MaxLength="200" />
+          <Property Name="CustomerAddress" Type="nvarchar" MaxLength="200" />
+          <Property Name="CustomerPhone" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerMail" Type="nvarchar" MaxLength="50" />
+          <Property Name="Nds" Type="money" />
+          <Property Name="NdsInc" Type="bit" />
+          <Property Name="Discount" Type="money" />
+          <Property Name="DiscPer" Type="bit" />
+          <Property Name="Total" Type="money" />
+          <Property Name="NdsV" Type="money" />
+          <Property Name="DiscV" Type="money" />
+          <Property Name="Comments" Type="nvarchar(max)" />
+          <Property Name="PaidTotal" Type="money" />
+          <Property Name="MasBaMakor" Type="money" />
+          <Property Name="IsDraft" Type="bit" />
+          <Property Name="IsArchive" Type="bit" />
+          <Property Name="CancelID" Type="int" />
+          <Property Name="CancelMsg" Type="nvarchar" MaxLength="200" />
+          <Property Name="IsCanceled" Type="bit" />
+          <Property Name="CustomerACountry" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerACity" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerAStreet" Type="nvarchar" MaxLength="50" />
+          <Property Name="CustomerAIndex" Type="nvarchar" MaxLength="20" />
+          <Property Name="DocStatus" Type="int" />
+        </EntityType>
+        <EntityType Name="tbUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegDate" Type="datetime" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Identificator" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsAdmin" Type="bit" />
+          <Property Name="IsArchive" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DBInvoice.dbo.vDocCompAndType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vDocCompAndType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CompanyID" Type="int" />
+          <Property Name="IPCode" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <Function Name="spGetUserData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="uid" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="DBInvoiceModelStoreContainer">
+          <EntitySet Name="tbBanks" EntityType="Self.tbBanks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbCommon" EntityType="Self.tbCommon" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbCompanies" EntityType="Self.tbCompanies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbCompanyCustomer" EntityType="Self.tbCompanyCustomer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbCustomers" EntityType="Self.tbCustomers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbDocumentNumbers" EntityType="Self.tbDocumentNumbers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbDocumentPayments" EntityType="Self.tbDocumentPayments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbDocumentProducts" EntityType="Self.tbDocumentProducts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbDocumentTypes" EntityType="Self.tbDocumentTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbProducts" EntityType="Self.tbProducts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbUserCompany" EntityType="Self.tbUserCompany" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbUserCustomer" EntityType="Self.tbUserCustomer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbUserDocuments" EntityType="Self.tbUserDocuments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbUsers" EntityType="Self.tbUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbBranches" EntityType="Self.tbBranches" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [tbBranches].[Id] AS [Id], 
+    [tbBranches].[BankID] AS [BankID], 
+    [tbBranches].[Name] AS [Name]
+    FROM [dbo].[tbBranches] AS [tbBranches]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vDocCompAndType" EntityType="Self.vDocCompAndType" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vDocCompAndType].[Id] AS [Id], 
+    [vDocCompAndType].[CompanyID] AS [CompanyID], 
+    [vDocCompAndType].[IPCode] AS [IPCode]
+    FROM [dbo].[vDocCompAndType] AS [vDocCompAndType]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DBInvoiceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DBInvoiceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbUserCompanies" EntityType="DBInvoiceModel.tbUserCompany" />
+          <FunctionImport Name="spGetUserData" ReturnType="Collection(DBInvoiceModel.spGetUserData_Result)">
+          <Parameter Name="uid" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="tbCustomers" EntityType="DBInvoiceModel.tbCustomer" />
+          <EntitySet Name="tbUserCustomers" EntityType="DBInvoiceModel.tbUserCustomer" />
+          <EntitySet Name="tbCompanyCustomers" EntityType="DBInvoiceModel.tbCompanyCustomer" />
+          <EntitySet Name="tbProducts" EntityType="DBInvoiceModel.tbProduct" />
+          <EntitySet Name="tbCompanies" EntityType="DBInvoiceModel.tbCompany" />
+          <EntitySet Name="tbDocumentTypes" EntityType="DBInvoiceModel.tbDocumentType" />
+          <EntitySet Name="tbDocumentNumbers" EntityType="DBInvoiceModel.tbDocumentNumber" />
+          <EntitySet Name="tbUsers" EntityType="DBInvoiceModel.tbUser" />
+          <EntitySet Name="tbCommons" EntityType="DBInvoiceModel.tbCommon" />
+          <EntitySet Name="tbDocumentProducts" EntityType="DBInvoiceModel.tbDocumentProduct" />
+          <EntitySet Name="tbDocumentPayments" EntityType="DBInvoiceModel.tbDocumentPayment" />
+          <EntitySet Name="tbBranches" EntityType="DBInvoiceModel.tbBranch" />
+          <EntitySet Name="tbUserDocuments" EntityType="DBInvoiceModel.tbUserDocument" />
+          <EntitySet Name="tbBanks" EntityType="DBInvoiceModel.tbBank" />
+          <EntitySet Name="vDocCompAndTypes" EntityType="DBInvoiceModel.vDocCompAndType" />
+        </EntityContainer>
+        <EntityType Name="tbUserCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="IsArchive" Type="Boolean" />
+        </EntityType>
+        <ComplexType Name="spGetUserData_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="FName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="RegDate" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Identificator" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="IsAdmin" Nullable="true" />
+          <Property Type="Boolean" Name="IsArchive" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="tbCustomer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Identificator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AStreet" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ACity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AIndex" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="ACountry" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CMobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="BankName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Branch" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsArchive" Type="Boolean" />
+          <Property Name="CardID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbUserCustomer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="CustomerID" Type="Int32" />
+          <Property Name="IsArchive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tbCompanyCustomer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="CustomerID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbProduct">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="Makat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsArchive" Type="Boolean" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="IsNew" Type="Boolean" />
+          <Property Name="Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbCompany">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SubTitle" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ESubTitle" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Identificator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Index" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BankName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Branch" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SWIFT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IBAN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EPayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EBankName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EBankAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsArchive" Type="Boolean" />
+          <Property Name="Logo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsLocked" Type="Boolean" />
+          <Property Name="CardExp" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CardNds" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KupatCash" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="KupatChecks" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CodeA1" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CodeA2" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbDocumentType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IPCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="IsArchive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tbDocumentNumber">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="DocID" Type="Int32" />
+          <Property Name="Start" Type="Int32" />
+          <Property Name="Last" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tbUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Identificator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsAdmin" Type="Boolean" />
+          <Property Name="IsArchive" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tbCommon">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nds" Type="Double" />
+          <Property Name="LastBKMId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbDocumentProduct">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocumentID" Type="Int32" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Double" Nullable="false" />
+          <Property Name="Amount" Type="Double" Nullable="false" />
+          <Property Name="Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbDocumentPayment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocID" Type="Int32" />
+          <Property Name="TypeID" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BankCode" Type="Int32" />
+          <Property Name="BranchCode" Type="Int32" />
+          <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Check" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Total" Type="Double" />
+          <Property Name="Comments" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="tbBranch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BankID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbUserDocument">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="DocumentType" Type="Int32" />
+          <Property Name="DocumentNumber" Type="Int32" />
+          <Property Name="Date" Type="DateTime" Precision="3" Nullable="false" />
+          <Property Name="DueDate" Type="DateTime" Precision="3" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="CompanyIdentificator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CompanyMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="Int32" />
+          <Property Name="CustomerIdentificator" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerPhone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerMail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Nds" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NdsInc" Type="Boolean" />
+          <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DiscPer" Type="Boolean" />
+          <Property Name="Total" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="NdsV" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DiscV" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PaidTotal" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="MasBaMakor" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="IsDraft" Type="Boolean" />
+          <Property Name="IsArchive" Type="Boolean" />
+          <Property Name="CancelID" Type="Int32" />
+          <Property Name="CancelMsg" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsCanceled" Type="Boolean" />
+          <Property Name="CreationDate" Type="DateTime" Precision="3" />
+          <Property Name="CustomerACountry" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerACity" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerAStreet" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerAIndex" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="DocStatus" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tbBank">
+          <Key>
+            <PropertyRef Name="Bid" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="NotInUse" Type="Boolean" />
+          <Property Name="Bid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="vDocCompAndType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CompanyID" Type="Int32" />
+          <Property Name="IPCode" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DBInvoiceModelStoreContainer" CdmEntityContainer="DBInvoiceEntities">
+          <EntitySetMapping Name="tbUserCompanies">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbUserCompany">
+              <MappingFragment StoreEntitySet="tbUserCompany">
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetUserData" FunctionName="DBInvoiceModel.Store.spGetUserData">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBInvoiceModel.spGetUserData_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Identificator" ColumnName="Identificator" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="tbCustomers">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbCustomer">
+              <MappingFragment StoreEntitySet="tbCustomers">
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="CardID" ColumnName="CardID" />
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+                <ScalarProperty Name="PayName" ColumnName="PayName" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Branch" ColumnName="Branch" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CMobile" ColumnName="CMobile" />
+                <ScalarProperty Name="CPhone" ColumnName="CPhone" />
+                <ScalarProperty Name="CEmail" ColumnName="CEmail" />
+                <ScalarProperty Name="CName" ColumnName="CName" />
+                <ScalarProperty Name="ACountry" ColumnName="ACountry" />
+                <ScalarProperty Name="AIndex" ColumnName="AIndex" />
+                <ScalarProperty Name="ACity" ColumnName="ACity" />
+                <ScalarProperty Name="AStreet" ColumnName="AStreet" />
+                <ScalarProperty Name="Identificator" ColumnName="Identificator" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbUserCustomers">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbUserCustomer">
+              <MappingFragment StoreEntitySet="tbUserCustomer">
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbCompanyCustomers">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbCompanyCustomer">
+              <MappingFragment StoreEntitySet="tbCompanyCustomer">
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbProducts">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbProduct">
+              <MappingFragment StoreEntitySet="tbProducts">
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="IsNew" ColumnName="IsNew" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Makat" ColumnName="Makat" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbCompanies">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbCompany">
+              <MappingFragment StoreEntitySet="tbCompanies">
+                <ScalarProperty Name="CodeA2" ColumnName="CodeA2" />
+                <ScalarProperty Name="CodeA1" ColumnName="CodeA1" />
+                <ScalarProperty Name="KupatChecks" ColumnName="KupatChecks" />
+                <ScalarProperty Name="KupatCash" ColumnName="KupatCash" />
+                <ScalarProperty Name="CardNds" ColumnName="CardNds" />
+                <ScalarProperty Name="CardExp" ColumnName="CardExp" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="Logo" ColumnName="Logo" />
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+                <ScalarProperty Name="EBankAddress" ColumnName="EBankAddress" />
+                <ScalarProperty Name="EBankName" ColumnName="EBankName" />
+                <ScalarProperty Name="EPayName" ColumnName="EPayName" />
+                <ScalarProperty Name="IBAN" ColumnName="IBAN" />
+                <ScalarProperty Name="SWIFT" ColumnName="SWIFT" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Branch" ColumnName="Branch" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="PayName" ColumnName="PayName" />
+                <ScalarProperty Name="InvMail" ColumnName="InvMail" />
+                <ScalarProperty Name="InvName" ColumnName="InvName" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Index" ColumnName="Index" />
+                <ScalarProperty Name="EAddress" ColumnName="EAddress" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="Identificator" ColumnName="Identificator" />
+                <ScalarProperty Name="ESubTitle" ColumnName="ESubTitle" />
+                <ScalarProperty Name="SubTitle" ColumnName="SubTitle" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="EName" ColumnName="EName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbDocumentTypes">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbDocumentType">
+              <MappingFragment StoreEntitySet="tbDocumentTypes">
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+                <ScalarProperty Name="IPCode" ColumnName="IPCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbDocumentNumbers">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbDocumentNumber">
+              <MappingFragment StoreEntitySet="tbDocumentNumbers">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Last" ColumnName="Last" />
+                <ScalarProperty Name="Start" ColumnName="Start" />
+                <ScalarProperty Name="DocID" ColumnName="DocID" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbUsers">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbUser">
+              <MappingFragment StoreEntitySet="tbUsers">
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="Identificator" ColumnName="Identificator" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="LName" ColumnName="LName" />
+                <ScalarProperty Name="FName" ColumnName="FName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbCommons">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbCommon">
+              <MappingFragment StoreEntitySet="tbCommon">
+                <ScalarProperty Name="LastBKMId" ColumnName="LastBKMId" />
+                <ScalarProperty Name="Nds" ColumnName="Nds" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbDocumentProducts">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbDocumentProduct">
+              <MappingFragment StoreEntitySet="tbDocumentProducts">
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbDocumentPayments">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbDocumentPayment">
+              <MappingFragment StoreEntitySet="tbDocumentPayments">
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Check" ColumnName="Check" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="BranchCode" ColumnName="BranchCode" />
+                <ScalarProperty Name="BankCode" ColumnName="BankCode" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="DocID" ColumnName="DocID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbBranches">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbBranch">
+              <MappingFragment StoreEntitySet="tbBranches">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BankID" ColumnName="BankID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbUserDocuments">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbUserDocument">
+              <MappingFragment StoreEntitySet="tbUserDocuments">
+                <ScalarProperty Name="DocStatus" ColumnName="DocStatus" />
+                <ScalarProperty Name="CustomerAIndex" ColumnName="CustomerAIndex" />
+                <ScalarProperty Name="CustomerAStreet" ColumnName="CustomerAStreet" />
+                <ScalarProperty Name="CustomerACity" ColumnName="CustomerACity" />
+                <ScalarProperty Name="CustomerACountry" ColumnName="CustomerACountry" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
+                <ScalarProperty Name="CancelMsg" ColumnName="CancelMsg" />
+                <ScalarProperty Name="CancelID" ColumnName="CancelID" />
+                <ScalarProperty Name="IsArchive" ColumnName="IsArchive" />
+                <ScalarProperty Name="IsDraft" ColumnName="IsDraft" />
+                <ScalarProperty Name="MasBaMakor" ColumnName="MasBaMakor" />
+                <ScalarProperty Name="PaidTotal" ColumnName="PaidTotal" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+                <ScalarProperty Name="DiscV" ColumnName="DiscV" />
+                <ScalarProperty Name="NdsV" ColumnName="NdsV" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="DiscPer" ColumnName="DiscPer" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="NdsInc" ColumnName="NdsInc" />
+                <ScalarProperty Name="Nds" ColumnName="Nds" />
+                <ScalarProperty Name="CustomerMail" ColumnName="CustomerMail" />
+                <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+                <ScalarProperty Name="CustomerAddress" ColumnName="CustomerAddress" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustomerIdentificator" ColumnName="CustomerIdentificator" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="CompanyMail" ColumnName="CompanyMail" />
+                <ScalarProperty Name="CompanyPhone" ColumnName="CompanyPhone" />
+                <ScalarProperty Name="CompanyAddress" ColumnName="CompanyAddress" />
+                <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+                <ScalarProperty Name="CompanyIdentificator" ColumnName="CompanyIdentificator" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="DueDate" ColumnName="DueDate" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="DocumentNumber" ColumnName="DocumentNumber" />
+                <ScalarProperty Name="DocumentType" ColumnName="DocumentType" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbBanks">
+            <EntityTypeMapping TypeName="DBInvoiceModel.tbBank">
+              <MappingFragment StoreEntitySet="tbBanks">
+                <ScalarProperty Name="Bid" ColumnName="Bid" />
+                <ScalarProperty Name="NotInUse" ColumnName="NotInUse" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vDocCompAndTypes">
+            <EntityTypeMapping TypeName="DBInvoiceModel.vDocCompAndType">
+              <MappingFragment StoreEntitySet="vDocCompAndType">
+                <ScalarProperty Name="IPCode" ColumnName="IPCode" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="01c7b95f394a4f91b722e0400e137c91" Name="Diagram1" ZoomLevel="114">
+        <EntityTypeShape EntityType="DBInvoiceModel.tbUserCompany" Width="1.5" PointX="5.125" PointY="0.5" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbCustomer" Width="1.5" PointX="8.875" PointY="0.625" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbUserCustomer" Width="1.5" PointX="5.125" PointY="2.625" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbCompanyCustomer" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbProduct" Width="1.5" PointX="3.375" PointY="5.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbCompany" Width="1.5" PointX="5.375" PointY="5.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbDocumentType" Width="1.5" PointX="7.75" PointY="8.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbDocumentNumber" Width="1.5" PointX="10.375" PointY="5.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbUser" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbCommon" Width="1.5" PointX="10.375" PointY="8.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbDocumentProduct" Width="1.5" PointX="7.375" PointY="5.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbDocumentPayment" Width="1.5" PointX="11.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbBranch" Width="1.5" PointX="7.375" PointY="11.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbUserDocument" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.tbBank" Width="1.5" PointX="9.375" PointY="11.75" />
+        <EntityTypeShape EntityType="DBInvoiceModel.vDocCompAndType" Width="1.5" PointX="11.375" PointY="11.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

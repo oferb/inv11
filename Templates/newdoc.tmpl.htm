@@ -1,0 +1,271 @@
+﻿<style>
+        .docItemsTable td {
+            padding-right: 5px;
+        }
+
+        .preview label, .preview span, .preview td, .preview th, .p-text {
+            font-size: 20px !important;
+        }
+
+        .preview th,.preview td{
+            padding: 5px !important;
+        }
+</style>
+
+<div class="preview docContent" style="width:880px;margin-right: 20px;">
+
+    <div class="row alert alert-success saved-doc" style="margin-right:0px" data-ng-show="newDoc.Id>0">
+        <div class="col-xs-8" style="font-size:24px;">מסמך שמור (<span style="font-size:24px">מס' <b>{{newDoc.Id}}</b></span>)</div>
+        <div class="col-xs-1 pull-left" style="margin-top: 5px;">
+            <a href="#" data-ng-click="resetNewDocument()">
+                <span class="mif-cancel mif-2x pull-left" style="font-size:24px;" title="מסמך חדש"></span>
+            </a>
+        </div>
+    </div>
+    <div class="row docLogo">
+        <!--<div style="float:right;width:160px;height:140px;text-align:right">
+            <img data-ng-src="{{getLogo(newDoc.Company)}}" style="max-width:150px;max-height:100px" />
+        </div>-->
+        <div style="float:right;  display:inline-block;" class="docLogoTitle">
+            <div class="row docFromCompany">
+                <h2 style="margin:20px 0px 20px 0px; font-size: 32px;">{{getShortStr(newDoc.Company.Name,60)}}</h2>
+                <div class="p-text">{{newDoc.Company.Street}}, {{newDoc.Company.City}}, {{newDoc.Company.Country}}, {{newDoc.Company.Phone}}, {{newDoc.Company.Email}}</div>
+            </div>
+            <!--<div><h1 style="margin: 0px 0px 10px 0px;">{{getDocTitle(newDoc.Type)}}</h1></div>-->
+            <!--<div>
+                <label>מספר רשום</label>
+                <span class="label label-primary" style="font-size:10px">לא קיים</span>
+            </div>-->
+            <div>
+                <label style="width: 120px;">עוסק מורשה: </label>
+                <span>{{newDoc.Company.Identificator}}</span>
+            </div>
+        </div>
+        <div style="float: left; display: inline-block; position: relative; top: 20px;">
+            <img data-ng-src="{{getLogo(newDoc.Company)}}" style="max-width:150px;max-height:100px" />
+            <!--<div style="text-align:center;font-weight:bold;color:#178acc">מסמך ממוחשב</div>
+            <div><img src="Images/dig_signed1.PNG" /></div>-->
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    <!--<div class="row docFromCompany">
+        <h2 style="margin:20px 0px 0px 0px;">{{newDoc.Company.Name}}</h2>
+        <div>{{newDoc.Company.Street}}, {{newDoc.Company.City}}, {{newDoc.Company.Country}}, {{newDoc.Company.Phone}}, {{newDoc.Company.Email}}</div>
+    </div>-->
+    <div>
+        <div style="float:right;"><h1 style="margin: 20px 0px 10px 0px;">{{getDocTitle(newDoc.Type)}}</h1></div>
+        <div style="float:left;"><div><label>תאריך:  </label>
+            <span>{{newDoc.Date | date:'dd/MM/yyyy'}}</span>
+            </div>
+        <h1 style="margin: 20px 0px 10px 0px;"><label style="font-size:18px">מספר רשום</label>
+<span class="label label-primary" style="font-size:18px">לא קיים</span></h1></div>
+        <div style="clear:both"></div>
+        </div>
+    <div class="row docToCompany">
+        <div class="divLihvod" style="margin-top:20px;">
+            <div style="float:right;width:80px;">
+                <h2 style="margin:0px;color:#bec0c0">לכבוד:</h2>
+            </div>
+            <div style="float:right" data-ng-hide="search.docCustomer==0">
+                <h2 style="margin:0px">{{newDoc.Customer.Name}}</h2>
+                <div class="p-text" data-ng-bind="addressStringL(newDoc.Customer)"></div>
+            </div>
+            <div style="float:right" data-ng-show="search.docCustomer==0">
+                <h2>לא נבחר לקוח</h2>
+            </div>
+                <div style="clear:both"></div>
+            </div>
+    </div>
+    <div class="row docItems" style="min-height:800px;">
+        <div data-ng-show="!hasSelectedItems() && !in([3,6,9,10])" class="docItemsTable" style="font-size:14px;margin-bottom:10px;">
+            <div class=" alert alert-warning">
+                <p style="text-align:center;font-size:18px;">נא לבחור פריטים</p>
+            </div>
+        </div>
+        <!-- חשבונית -->
+        <div data-ng-show="hasSelectedItems() && !in([3,6,9,10,12])" class="docItemsTable">
+            <table style="margin-bottom:20px;width:100%">
+                <thead>
+                    <tr>
+                        <th style="width: 5%">מס</th>
+                        <th>פירוט</th>
+                        <th style="width: 15%">מחיר</th>
+                        <th style="width: 10%">כמות</th>
+                        <th style="width: 15%">סה"כ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="p in userProducts | filter: {Selected:true} track by $index">
+                        <td>{{($index+1)}}</td>
+                        <td>{{p.Name}}<span data-ng-show="p.Info!=null && p.Info.trim()!=''"> ,</span>{{p.Info}}</td>
+                        <td>{{p.Price}}</td>
+                        <td>{{p.Amount}}</td>
+                        <td>{{(p.Price*p.Amount).toFixed(2)}}</td>
+                    </tr>
+                    <!-- to pay - temp calculations -->
+                    <tr>
+                        <td colspan="5" height="15px" style="border-right:none; border-left:none;"></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td colspan="3" class="tot-cell">סה"כ:</td>
+                        <td><span>{{(calcTotal()).toFixed(2)}}</span></td>
+                    </tr>
+                    <tr data-ng-show="newDoc.Discount>0">
+                        <td></td>
+                        <td class="tot-cell" colspan="3">הנחה <span data-ng-show="newDoc.DiscPer">({{newDoc.Discount}}%):</span></td>
+                        <td><span>{{(calcDisc()).toFixed(2)}}</span></td>
+                    </tr>
+                    <tr data-ng-show="newDoc.Discount>0">
+                        <td></td>
+                        <td class="tot-cell" colspan="3">סה"כ אחרי הנחה:</td>
+                        <td><span>{{(calcTotal()-calcDisc()).toFixed(2)}}</span></td>
+                    </tr>
+                    <tr data-ng-show="newDoc.NdsInc && newDoc.Nds>0">
+                        <td></td>
+                        <td class="tot-cell" colspan="3">
+                            מע"מ <span>{{newDoc.Nds}}</span> %:
+                        </td>
+                        <td><span>{{(totalItemsNds()).toFixed(2)}}</span></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5" height="15px" style="border-right:none; border-left:none; border-bottom:none;"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="tot-cell" colspan="4">סה"כ לתשלום עד <span><b>{{newDoc.DueDate | date:'dd/MM/yyyy'}}</b></span> (ש"ח):</td>
+                        <td><span>{{(totalItems()).toFixed(2)}}</span></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+        <!-- קבלה -->
+        <div data-ng-show="in([2,3,6])" class="docItemsTable">
+            <div data-ng-show="docPayments.length>0 && in([2])">
+                <h2>מאפיני תשלום</h2>
+            </div>
+            <div data-ng-show="docPayments.length==0" class="docItemsTable" style="font-size:14px">
+                <div class="alert alert-warning">
+                    <p style="text-align:center;font-size:18px;">נא לבחור אמצעי תשלום</p>
+                </div>
+            </div>
+            <table style="margin-bottom:10px; width: 100%;" data-ng-show="docPayments.length>0">
+                <thead>
+                    <tr>
+                        <th style="width:10%">סוג</th>
+                        <th>פרטים</th>
+                        <th style="width:15%">זמן פרעון</th>
+                        <th style="width:15%">סכום</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="p in docPayments">
+                        <td>{{p.Type.Label}}</td>
+                        <td>{{getPayDescription(p)}}</td>
+                        <td>{{p.Date | date:'dd/MM/yyyy'}}</td>
+                        <td>{{p.Total.toFixed(2)}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" height="15px" style="border-right:none; border-left:none; border-bottom:none;"></td>
+                    </tr>
+                    <tr data-ng-show="newDoc.Paid.MasBaMakor>0">
+                        <td></td>
+                        <td colspan="2">
+                            סה"כ:
+                        </td>
+                        <td>{{(calcPaymentsTotal()).toFixed(2)}}</td>
+                    </tr>
+                    <tr data-ng-show="newDoc.Paid.MasBaMakor>0">
+                        <td></td>
+                        <td colspan="2">
+                            ניקוי מס במקור (ש"ח):
+                        </td>
+                        <td>{{(calcPaymentsTotal()*newDoc.Paid.MasBaMakor/100).toFixed(2)}}</td>
+                    </tr>
+                    <tr data-ng-show="newDoc.Paid.MasBaMakor>0">
+                        <td colspan="4" height="15px" style="border-right:none; border-left:none; border-bottom:none; border-top:none;"></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td class="tot-cell" colspan="2">סה"כ (ש"ח):</td>
+                        <td><span>{{(calcPaymentsTotal()*(1 - newDoc.Paid.MasBaMakor/100)).toFixed(2)}}</span></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <!-- cancel -->
+        <!--<div class="docItemsTable" data-ng-show="newDoc.Type>=9 && newDoc.Type!=11"> // changed by ortal&nofar-->
+        <div class="docItemsTable" data-ng-show="newDoc.Type>=9 && newDoc.Type!=11 && newDoc.Type!=12">
+            <table style="margin-bottom:10px;width:100%">
+                <thead>
+                    <tr>
+                        <th style="width:5%">מס</th>
+                        <th>פירוט</th>
+                        <th>סכום</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12</td>
+                        <td>{{CancelMsg}}</td>
+                        <td>0.01</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td class="tot-cell">סה"כ (ש"ח):</td>
+                        <td><span>0.01</span></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+            <!-- חשבונית מס מרוכזת --> 
+            <!--// changed by ortal&nofar-->-->
+            <div class="docItemsTable" data-ng-show="newDoc.Type==12">
+                <table style="margin-bottom:10px;width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width:5%">מס</th>
+                            <th>מס תעודת משלוח</th>
+                            <th style="width:15%">סכום</th>
+                            <th style="width:15%">תאריך</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-ng-repeat="p in idsToShow ">
+                            <td>{{p.Id}}</td>
+                            <td>{{p.DocumentNumber}}</td>
+                            <td>{{p.Total}}</td>
+                            <td>{{p.DateV}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td class="tot-cell">סה"כ (ש"ח):</td>
+                            <td> {{getSumOfShippingCertificates()}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+        <!-- comments -->
+        <div style="margin-bottom:10px;" data-ng-show="newDoc.Comments.trim()!=''">
+            <div class="p-text" style="float:right;width:60px;margin-top:5px; margin-left:10px">הערות: </div>
+            <div class="p-text" style="float:right">
+                <span class="help-block">{{newDoc.Comments}}</span>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+    <!--<div class="row docFooter" style="text-align:center;border-top:1px solid silver;">
+        מסמך זה הופק ונחתם דיגיטלית ע"י מערכת
+        <b>חשבונית-פלוס</b>
+    </div>-->
+</div>

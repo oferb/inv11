@@ -1,0 +1,39 @@
+﻿/*.container*/
+#divBody{
+    min-width:1140px!important;
+}
+.dpFrom input, .dpTo input{
+    min-width: 70px!important;
+}
+
+
+/*.navbar-collapse.collapse {
+  display: block!important;
+}
+
+.navbar-nav>li, .navbar-nav {
+  float: left !important;
+}
+
+.navbar-nav.navbar-right:last-child {
+  margin-right: -15px !important;
+}
+
+.navbar-right {
+  float: right!important;
+}*/
+
+/*ul.nav {
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+ul.nav li {
+    display: inline-block;
+    float: none;
+}*/
+/*@media (min-width: 768px) {
+    #bs-example-navbar-collapse-1 {
+       padding: 0 15px;
+    }
+}*/

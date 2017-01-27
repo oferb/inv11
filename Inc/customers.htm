@@ -1,0 +1,203 @@
+﻿<form class="form-horizontal" id="f431" name="f431" novalidate action="javascript:UpdateCustomerData()">
+    <fieldset>
+        <!-- subtitle -->
+        <div class="alert alert-dismissible alert-info h-info container-fluid">
+            <div class="row-fluid">
+                <button type="button" class="btn btn-primary btn-xs pull-left"
+                        data-ng-click="selection.custId=null; filterCustomers()"
+                        data-ng-show="selectedCustomer.Id!=null && isCustSelectedTab!=0">
+                    ביטול בחירה
+                </button>
+                <h3 class="pull-right">{{selectedCustomerTitle()}}</h3>
+            </div>
+        </div>
+        <!--tabs-->
+        <ul class="nav nav-tabs" id="custCardTabs">
+            <li class="active">
+                <a href="#allCustomers" data-toggle="tab"
+                   data-ng-click="setCustTabSelected(-1)">רשימת הלקוחות</a><!-- data-ng-class="{'active': isCustSelectedTab==0}" tabCustomerCardClick($event)-->
+            </li>
+
+            <!-- card tabs -->
+            <li data-ng-repeat="t in cardCustTabs track by $index"
+                data-ng-show="$index==0 || selection.custId!=0" data-ng-hide="isCustSelectedTab==0 || ($index>0 && selection.custId==0)">
+                <a data-ng-href="#{{t.name}}" data-toggle="tab"
+                   data-ng-show="selectedCustomer.Id!=null"
+                   data-ng-click="setCustTabSelected($index)">
+                    {{t.title}}
+                    <span class="badge b-red" data-ng-show="custValidatorErrors[$index]>0">{{custValidatorErrors[$index]}}</span>
+                </a>
+            </li>
+            <!--<li data-ng-show="$index==0 || selection.custId==0" data-ng-hide="isCustSelectedTab==0">
+                <a data-ng-href="#{{t.name}}" data-toggle="tab"
+                   data-ng-show="selectedCustomer.Id!=null"
+                   data-ng-click="setCustTabSelected($index)">פרטי לקוח חדש<span class="badge b-red" data-ng-show="custValidatorErrors[$index]>0">{{custValidatorErrors[$index]}}</span>
+                </a>
+            </li>-->
+            <li class="pull-left" data-ng-show="isCustSelectedTab==0">
+                <span style="margin-top:10px;display:inline-block">
+                    <a href="#" style="display:inline-block;margin-left:20px" data-ng-csv="userCustomers" data-filename="customers.csv" data-add-bom="true">
+                        <span class="glyphicon glyphicon-save-file" style="display:inline-block;margin-left:5px"></span>יצוא לקובץ CSV
+                    </a>
+                </span>
+            </li>
+            <li class="pull-left" data-ng-show="isChangedCustField(null)">
+                <span class="label label-warning w-not-saved">לא שמור</span>
+            </li>
+        </ul>
+        <!--cards-->
+        <div class="tab-content col-xs-12">
+
+            <div class="tab-pane active in tm-row" id="allCustomers">
+                <!--fade-->
+                <!-- search/filters panel -->
+                <table style="width:100%">
+                    <tr>
+                        <td style="padding:0px">
+                            <div class="row tm-panel well" style="height: 47px;">
+                                <div class="col-xs-4">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control input-sm" placeholder="חפש" style="margin-left:0px;"
+                                               data-ng-model="search.customerKey" data-ng-disabled="userCustomersBac.length==0" />
+                                        <div class="input-group-btn" data-ng-style="{'visibility': search.customerKey.trim()=='' ? 'hidden':'visible'}">
+                                            <button type="button" class="btn btn-default btn-sm" title="בטל" data-ng-click="search.customerKey=''">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4" style="margin-top:6px;">
+                                    <div class="input-group">
+                                        <input type="checkbox" data-ng-disabled="userCustomers.length==0" data-ng-model="custFilter.active" /><label>פעילים</label>
+                                        <input type="checkbox" data-ng-disabled="userCustomers.length==0" data-ng-model="custFilter.notActive" /><label>לא פעילים</label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2"><div class="found-items"><span>סה'כ לקוחות: </span>{{userCustomers.length}}</div></div>
+                                <div class="col-xs-2">
+                                    <div class="input-group tm-float">
+                                        <a href="#" class="btn btn-primary btn-sm" data-ng-click="selectCustomer(0)">הוספת לקוח חדש</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- no results -->
+                <table style="width:100%" data-ng-show="userCustomers.length==0">
+                    <tr>
+                        <td>
+                            <div class="alert alert-warning tm-panel">
+                                <p style="text-align:center">אין לקוחות</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- table -->
+                <div style="min-height:430px;">
+                    <table class="table table-striped table-hover" id="tbCustumers" data-ng-show="userCustomers.length>0">
+                        <thead style="cursor: pointer;">
+                            <tr>
+                                <th style="text-align:center;width:60px" title="קישורים">
+                                    קישורים
+                                </th>
+                                <th><span data-ng-click="changeSorting(customerSort,'Id')"><span data-ng-class="selectedCls(customerSort,'Id')"></span><a href="#">מס</a></span></th>
+                                <th>
+                                    <span data-ng-click="changeSorting(customerSort,'Identificator')">
+                                        <span data-ng-class="selectedCls(customerSort,'Identificator')"></span>
+                                        <a href="#" title="עוסק מורשה/ חפ / ת.ז">עמ / חפ / תז</a>
+                                    </span>
+                                </th>
+                                <th><span data-ng-click="changeSorting(customerSort,'Name')"><span data-ng-class="selectedCls(customerSort,'Name')"></span><a href="#">שם הלקוח</a></span></th>
+                                <th><span data-ng-click="changeSorting(customerSort,'Address')"><span data-ng-class="selectedCls(customerSort,'Address')"></span><a href="#">כתובת</a></span></th>
+                                <th><span data-ng-click="changeSorting(customerSort,'Email')"><span data-ng-class="selectedCls(customerSort,'Email')"></span><a href="#">אמייל</a></span></th>
+                                <th><span data-ng-click="changeSorting(customerSort,'Phone')"><span data-ng-class="selectedCls(customerSort,'Phone')"></span><a href="#">טלפון</a></span></th>
+                                <th style="text-align:center" title="פעיל/לא פעיל">פעיל</th>
+                                <th style="width:22px;text-align:center" title="מחיקה">מ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="p in userCustomers | orderBy:customerSort.column:customerSort.descending | limitTo: pageSize : paging[2].from"><!--data-ng-class="{'info':selectedCustomer.Id==p.Id}"-->
+                                <td>
+                                    <a href="#" title="הפקת מסמך" data-ng-click="search.docCustomer=p.Id;showPage(11)"><span class="glyphicon glyphicon-circle-arrow-right"></span></a>
+                                    <a href="#" data-ng-click="search.docCustomer=p.Id;showPage(31)" title="דוחות"><span class="glyphicon glyphicon-list-alt"></span></a>
+                                </td>
+                                <td>{{p.Id}}</td>
+                                <td>{{p.Identificator}}</td>
+                                <td><a href="#" data-ng-click="selectCustomer(p.Id);filterCustomers()" onclick="$('#f431 .nav-tabs li:eq(1) a').tab('show')">{{p.Name}}</a></td>
+                                <td data-ng-bind="addressString(p)"></td>
+                                <td><a href="mailto:{{p.Email}}">{{p.CEmail}}</a></td>
+                                <td>{{p.CPhone}}</td>
+                                <td>
+                                    <input type="checkbox" data-ng-model="p.IsActive" data-ng-change="changeCustomerActive(p.Id)">
+                                </td>
+                                <td>
+                                    <a href="#"
+                                       data-mwl-confirm
+                                       title="מחיקה"
+                                       data-message="למחוק את הלקוח?"
+                                       data-confirm-text="מחיקה"
+                                       data-cancel-text="ביטול"
+                                       data-placement="right"
+                                       data-on-confirm="deleteCustomer(p.Id)"
+                                       data-confirm-button-type="danger"
+                                       data-cancel-button-type="default">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- paging -->
+                <div data-ng-include="'Templates/paging.tmpl.htm'" onload="index=2"></div>
+            </div>
+            <!-- card tab pages -->
+            <div data-ng-repeat="t in cardCustTabs | limitTo: (selection.custId==0 ? 1 : 10)" class="tab-pane" data-ng-attr-id="{{t.name}}">
+                <!--fade in-->
+                <div class="form-group row" data-ng-repeat="x in custEditConfig.data | filter: {tab: selection.custId==0 ? undefined : t.name}"
+                     data-ng-class="{'has-warning':isChangedCustField(x.param)}" data-ng-show="selection.custId!=0 || compRequiredFields(x)">
+                    <label class="col-xs-3 control-label" data-ng-style="{'padding-top': x.type=='checkbox' ? '0px' : '9px'}">
+                        {{x.label}} <span title="שדה חובה" data-ng-if="selectedCustomer.Id==0 && x.hasOwnProperty('rule') && x.hasOwnProperty('short')"
+      class="glyphicon glyphicon-asterisk" style="color:red;font-size:10px"></span>
+                    </label>
+                    <div class="col-xs-9">
+                        <input type="{{x.type}}" class="form-control" placeholder="{{x.label}}" data-ng-style="{'height': x.type=='checkbox' ? '16px' : '38px'}"
+                               data-ng-model="selectedCustomer[x.param]" dir="{{x.dir}}" name="{{x.param}}" data-ng-hide="x.type=='textarea'" />
+                        <textarea class="form-control" style="width:280px" rows="3" data-ng-model="selectedCustomer['Comments']" data-ng-show="x.type=='textarea'"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- card buttons -->
+            <div style="min-height:60px">
+                <div class="col-xs-offset-3 col-xs-3" data-ng-show="isCustSelectedTab>0">
+                    <!--custValidatorErrorsSum()>0 || (selectedCustomer.Id==0 && isNewCustFormNotFilled()) data-ng-show="isChangedCustField(null)"  data-ng-show="isChangedCustField(null)"-->
+                    <button type="submit" class="btn btn-primary btn-large" data-ng-click="submitted=true;"
+                            data-ng-disabled="!isChangedCustField(null)">
+                        שמירה
+                    </button>
+                    <button type="button" class="btn btn-warning btn-large" data-ng-click="submitted=true;resetErrorCustomerForms()"
+                            data-ng-disabled="!isChangedCustField(null)">
+                        איתחול
+                    </button>
+                </div>
+                <div class="alert alert-warning col-xs-3 pull-left but-height" data-ng-show="selectedCustomer.Id==0 && isNewCustFormNotFilled() && custValidatorErrorsSum()==0  && isCustSelectedTab>0">
+                    נא למלא את כל השדות הנדרשים
+                </div>
+                <div class="alert alert-danger col-xs-3 pull-left but-height" data-ng-show="custValidatorErrorsSum()>0">
+                    <span data-ng-show="custValidatorErrorsSum()==1">שדה 1 לא עבר וולידציה</span>
+                    <span data-ng-show="custValidatorErrorsSum()>1">{{custValidatorErrorsSum()}} שדות לא עברו וולידציה</span>
+                </div>
+            </div>
+        </div>
+
+    </fieldset>
+</form>
+<script>
+
+    $().ready(function () {
+        // validation instructions
+        scope.customerValidator = $("#f431").validate(custEditConfig.toValidation());
+    })
+</script>

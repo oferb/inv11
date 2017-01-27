@@ -1,0 +1,396 @@
+﻿<div class="col-xs-6 well" style="padding-top:30px;" id="newDocFrame">
+    <form class="form-horizontal">
+        <fieldset>
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="form-group" style="margin-left:0px;margin-right:-12px">
+
+                        <label class="col-xs-2 control-label">שם העסק</label>
+                        <div class="col-xs-10" style="padding-left: 0px;">
+                            <div style="margin-top: 4px;float:right;width: 100%;">
+                                <div class="well-inv" style="width: 100%;">
+                                    <span>{{getShortStr(newDoc.Company.Name,60)}}</span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-xs-10 col-xs-offset-2" data-ng-show="newDoc.Type==1 && false">
+                            <input type="checkbox" data-ng-model="selfInvoice" style="width:20px">
+                            <label class="control-label">חשבונית עצמית</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group" style="margin-left:0px;margin-right:-12px">
+                            <label class="col-xs-2 control-label">לכבוד</label>
+
+                            <div class="col-xs-10" style="padding-left: 0px;" data-ng-show="selfInvoice">
+                                <div style="margin-top: 0px;float:right;width: 100%;">
+                                    <div class="well-inv" style="width: 100%;">
+                                        <span>{{getShortStr(newDoc.Company.Name,60)}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-10" style="padding-left: 0px;" id="divChooseCustumer" data-ng-show="!selfInvoice">
+                                <!--<div data-ng-hide="newDoc.Type>8 && newDoc.Type!=11" style="width: 100%;"> // changed by #ortal&nofar#-->
+                                    <div data-ng-hide="newDoc.Type>8 && newDoc.Type!=11 && newDoc.Type!=12" style="width: 100%;">
+                                        <select id="selCustomer2" class="selectpicker" data-live-search="true" style="width: 100%;"
+                                                data-selected-text-format="count" title="לא נבחר לקוח ..."></select>
+                                    </div>
+                                    <!--<div data-ng-show="newDoc.Type>8 && newDoc.Type!= 11" style="width: 100%;"> // changed by #ortal&nofar#-->
+                                    <div data-ng-show="newDoc.Type>8 && newDoc.Type!= 11 && newDoc.Type!=12" style="width: 100%;">
+                                        <div class="well-inv" style="width: 100%;">
+                                            <span>{{newDoc.Customer.Name}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" data-ng-show="newDoc.Company.IsLocked==null || !newDoc.Company.IsLocked">
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-2">
+                            <div class="alert alert-danger">
+                                לא ניתן להשתמש בבית עסק ליפני שמירת המספור
+                                <br />
+                                <a href="#" data-ng-click="goToNumLock()">לעבור לדף מספור מסמכים</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" data-ng-show="userCustomers.length==0">
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-2">
+                            <div class="alert alert-danger">
+                                לא ניתן להפיק מסמכים ליפני הוספת לקוחות
+                                <br />
+                                <a href="#" data-ng-click="showNewCustPage()">לעבור לדף הוספת לקוח חדש</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group" style="padding-left:0px;margin-left:0px;">
+                        <label class="col-xs-2 control-label">תאריך</label>
+                        <div class='col-xs-4'>
+                            <div class='input-group date' id='datetimepickerNewDocFrom' style="width: 160px;width: 160px;margin-right: 2px;">
+                                <input type='text' class=" form-control input-sm " ng-readonly="in([11])"/>
+                                <span class="input-group-btn">
+                                    <span class="input-group-addon input-sm">
+                                        <span class="glyphicon glyphicon-calendar span-sm"></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <label class="col-xs-2 control-label" data-ng-hide="in([3,4,9,10])">לתשלום עד</label>
+                        <div class='col-xs-4' data-ng-hide="in([3,4,9,10])">
+                            <div class='input-group date' id='datetimepickerNewDocDue' style="width: 160px;">
+                                <input type='text' class="form-control input-sm" />
+                                <span class="input-group-btn">
+                                    <span class="input-group-addon input-sm">
+                                        <span class="glyphicon glyphicon-calendar span-sm"></span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- items -->
+                <div class="row" data-ng-hide="in([3,6,9,10])">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">פריטים</label>
+                        <div class="col-xs-10">
+                            <div class="div-tb-blue" data-ng-show="hasSelectedItems()">
+                                <table class="table table-striped table-hover tb-items tb-blue">
+                                    <thead>
+                                        <tr><th>פריטים</th><th style="width:70px">מחיר</th><th style="width:50px">כמות</th><th style="width:30px"></th></tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="p in userProducts | filter: {Selected:true}">
+                                            <td colspan="4">
+                                                <div>
+                                                    <div style="float:right;width:270px;margin-top: 4px;">{{p.Name}}</div>
+                                                    <div style="float:right;width:69px;"><input type="number" data-ng-model="p.Price" style="width:70px" min="0" /></div>
+                                                    <div style="float:right;width:50px"><input type="number" data-ng-model="p.Amount" style="width:50px" min="0" /></div>
+                                                    <div style="float:left;width:20px">
+                                                        <a href="#" title="מחיקה" data-ng-click="p.Selected=false">
+                                                            <span class="glyphicon glyphicon-remove" style="margin-top:3px;"></span>
+                                                        </a>
+                                                    </div>
+                                                    <div style="clear:both"></div>
+                                                </div>
+                                                <div style="margin-top:1px;">
+                                                    <div style="float:right;width:59px;font-size:11px;font-weight:bold;background-color: #D3E9F3;height: 20px;padding-top: 3px;padding-right: 4px;">מידע נוסף</div>
+                                                    <div style="float:right;width:330px;"><input type="text" style="width:330px;max-width:500px;font-size:10px" data-ng-model="p.Info" /></div>
+                                                    <div style="float:left;width:20px">&nbsp;</div>
+                                                    <div style="clear:both"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="divAddItem">
+                                <select id="selProduct" class="selectpicker new-item" data-live-search="true"
+                                        data-width="100%" data-callback="NewProductCallback"
+                                        data-selected-text-format="count" title="נא לבחור פריט אחד או ליצר פריט חד פעמי ..."></select>
+                            </div>
+                        </div>
+                        <!-- buttons -->
+                        <div class="col-xs-10 col-xs-offset-2" style="margin-top:10px;">
+                            <a href="#" class="btn btn-primary btn-sm" data-ng-click="showPage(44,$event);showTab('allItems')" style="width: 106px;">פריטים מהרשימה</a>
+                            <button type="button" class="btn btn-warning btn-sm" data-ng-click="clearSelectedItems()" data-ng-show="hasSelectedItems()">ביטול</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- discount -->
+                <div class="row" data-ng-hide="in([3,6,9,10])">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">הנחה</label>
+                        <div class="col-xs-3">
+                            <input type='number' class="form-control input-sm" data-ng-model="newDoc.Discount" min="0">
+                        </div>
+                        <div class="col-xs-4" style="padding-right: 0px;">
+                            <input type="radio" name="optionsRadios" data-ng-model="newDoc.DiscPer" data-ng-value="true" />
+                            <label class="control-label">%</label>
+                            <input type="radio" name="optionsRadios" data-ng-model="newDoc.DiscPer" data-ng-value="false" />
+                            <label class="control-label nis">₪</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- nds-->
+                <div class="row" data-ng-hide="in([3,6,9,10])">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">מע"מ</label>
+                        <div class="col-xs-3">
+                            <input type='number' class="form-control input-sm" data-ng-model="newDoc.Nds" step="1" min="0" max="99" readonly="readonly" />
+                        </div>
+                        <div class="col-xs-4" style="padding-right: 0px;">
+                            <label class="control-label pull-right" style="padding-top:6px;margin-left:18px">%</label>
+                            <input type="checkbox" data-ng-model="newDoc.NdsInc" style="width:20px">
+                            <label class="control-label">להוסיף</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- total -->
+                <div class="row" data-ng-show="hasSelectedItems()" data-ng-hide="in([3,6,9,10])">
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-2" style="padding-top:2px">
+                            <hr class="total-l" />
+                            <div style="float:right;margin-right:0px;margin-left:5px;">
+                                <label>סה"כ</label>
+                                <label class="total">{{(calcTotal()-calcDisc()).toFixed(2)}}</label>
+                                <label class="nis">₪</label>
+                                <label style="margin-right:10px;">מע"מ</label>
+                                <label class="total">{{(totalItemsNds()).toFixed(2)}}</label>
+                                <label class="nis">₪</label>
+                            </div>
+                            <div style="float:left;">
+                                <label>סה"כ לתשלום</label>
+                                <span class="label label-info ng-binding" style="font-size: 14px;">{{(totalItems()).toFixed(2)}}</span>
+                                <label class="nis">₪</label>
+                            </div>
+                            <div style="clear:both"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- payments -->
+                <div class="row" data-ng-show="in([2,3,6])">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">תשלומים</label>
+                        <div class="col-xs-10" data-ng-show="docPayments.length==0">
+                            <div class="panel panel-default" style="margin-bottom:0px;">
+                                <div class="panel-body">
+                                    <a href="#" data-ng-click="resetPayment();showPage(61,$event)">נא לבחור אמצעי תשלום</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-10" data-ng-show="docPayments.length>0">
+                            <div class="div-tb-blue">
+                                <table class="table table-striped table-hover tb-items tb-blue">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:42px">סוג</th>
+                                            <th>תיאור</th>
+                                            <th>תאריך</th>
+                                            <th>סכום</th>
+                                            <th style="width:22px"></th>
+                                            <th style="width:22px"></th>
+                                            <th style="width:22px"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-ng-repeat="p in docPayments track by $index">
+                                            <td>
+                                                {{p.Type.Label}} <a href="#" title="תשלום במספר צ'קים"
+                                                                    data-ng-if="isLastCheck(p)" class="inv-check" data-pay-id="{{$index}}">
+                                                    <span class="mif-stack"></span>
+                                                </a>
+                                            </td>
+                                            <td class="b-right">{{getPayDescription(p)}}</td>
+                                            <td class="b-right">{{getPayDate(p.Date)}}</td>
+                                            <td class="b-right">{{p.Total}}</td>
+                                            <td class="b-right">
+                                                <a href="#" title="העתקה" data-ng-click="selectPayForUpdate($index,1)" data-ng-show="p.Type.Id==1">
+                                                    <span class="glyphicon glyphicon-copy"></span>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="#" title="עריכה" data-ng-click="selectPayForUpdate($index,0)">
+                                                    <span class="glyphicon glyphicon-pencil"></span>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a href="#" title="מחיקה" data-ng-click="remPayment($index)">
+                                                    <span class="glyphicon glyphicon-remove"></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-10 col-xs-offset-2" data-ng-show="docPayments.length>0">
+                            <a href="#popupBottom" role="button" class="btn btn-primary btn-sm" data-ng-click="resetPayment();showPage(61,$event)">הוספת תשלום</a>
+                            <button type="button" class="btn btn-warning btn-sm" id="btnPayItem"
+                                    data-ng-click="clearPayments()" data-ng-show="docPayments.length>0">
+                                ביטול
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- mas bamakor -->
+                <div class="row" data-ng-show="in([2,3,6])">
+                    <div class="form-group">
+                        <label class="col-xs-2 control-label">מס במקור</label>
+                        <div class="col-xs-3">
+                            <input type='number' class="form-control input-sm" data-ng-model="newDoc.Paid.MasBaMakor" min="0" step="1" max="99">
+                        </div>
+                        <div class="col-xs-1" style="padding-right:0px">
+                            <label class="control-label pull-right" style="padding-top:6px">%</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- total -->
+                <div class="row" data-ng-show="docPayments.length>0">
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-2" style="padding-top:2px">
+                            <hr class="total-l" />
+
+                            <div style="float:left;">
+                                <label>סה"כ תשלומים</label>
+                                <span class="label label-info ng-binding" style="font-size: 14px;">{{(calcPaymentsTotal()*(1 - newDoc.Paid.MasBaMakor/100)).toFixed(2)}}</span>
+                                <label class="nis">₪</label>
+                            </div>
+                            <div style="clear:both"></div>
+                        </div>
+                        <!--<div class="col-xs-6">
+                            <label class="col-xs-2 control-label" style="padding-top:2px">סה"כ</label>
+                            <span class="label label-info" style="font-size: 14px;">{{(calcPaymentsTotal()*(1 - newDoc.Paid.MasBaMakor/100)).toFixed(2)}}</span>
+                            <label class="control-label nis" style="padding-top:2px">₪</label>
+                        </div>-->
+
+                    </div>
+                </div>
+
+                <!--changed by #ortal&nofar#-->
+                <!-- Shipping-->
+                <div class="row" data-ng-show="in([12])">
+                    <div class="form-group">
+                        <label for="textArea" class="col-md-2 control-label">תעודת משלוח</label>
+                        <!-- table -->
+                        <div style="min-height:430px;">
+                            <table class="table table-striped table-hover tm-grid" data-ng-show="filteredDocuments().length>0" >
+                                <thead>
+                                    <tr>
+                                        <th style="width:30px; align-self:center;"><span title="בחר" align="center" class="glyphicon glyphicon-check"></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'Id')"><span data-ng-class="selectedCls(docSort,'Id')"></span><a href="#">מס</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'DocumentNumber')"><span data-ng-class="selectedCls(docSort,'DocumentNumber')"></span><a href="#">מס' סידורי</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'CompanyN')"><span data-ng-class="selectedCls(docSort,'CompanyN')"></span><a href="#">בית עסק</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'CustomerN')"><span data-ng-class="selectedCls(docSort,'CustomerN')"></span><a href="#">לקוח</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'Total')"><span data-ng-class="selectedCls(docSort,'Total')"></span><a href="#">סכום</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'DateVal')"><span data-ng-class="selectedCls(docSort,'DateVal')"></span><a href="#">תאריך</a></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!------------------------------------------------------------------------->
+                                    <tr data-ng-repeat="p in filteredDocuments() | orderBy:docSort.column:docSort.descending | limitTo: pageSize : paging[3].from" data-ng-class="{'success':p.Id==newDoc.Id}">
+                                        <!--checkbox-->
+                                        <td >
+                                            <!--<input type="checkbox" data-ng-model="docCheckBox" data-ng-change="linesToInvoice(docCheckBox,p)" ng-checked="{{p.isCheckd}}">-->
+                                            <input type="checkbox" data-ng-model="docCheckBox" data-ng-if="p.DocumentType==11" data-ng-change="linesToInvoice(docCheckBox,p)" ng-checked="{{p.isCheckd}}">
+                                        </td>
+                                        <td>{{p.Id}}</td>
+                                        <td>{{p.DocumentNumber}}</td>
+                                        <td>{{p.CompanyN}}</td>
+                                        <td>{{p.CustomerN}}</td>
+                                        <td>{{p.DateV}}</td>
+                                        <td>{{dueDate(p)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-------------------------------->
+                <!-- comments -->
+                <div class="row">
+                    <div class="form-group">
+                        <label for="textArea" class="col-xs-2 control-label">הערות</label>
+                        <div class="col-xs-10">
+                            <textarea class="form-control" rows="2" id="textArea" data-ng-model="newDoc.Comments"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- buttons -->
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-xs-10 col-xs-offset-2"
+                             data-ng-hide="newDoc.Company.IsLocked==null || !newDoc.Company.IsLocked || search.docCustomer == 0">
+                            <button type="button" class="btn btn-success btn-sm" onclick="SaveAsPdf()" data-ng-show="isDocFilled()">הפקת המסמך</button>
+                            <button type="button" class="btn btn-primary btn-sm" data-ng-show="isDocFilled() && (newDoc.Type<9 || newDoc.Type >= 11)" onclick="SaveDocument()">שמירה</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-ng-click="resetNewDocument()" data-ng-show="isDocReady() && (newDoc.Type<9 || newDoc.Type >= 11)">איתחול</button>
+                        </div>
+
+                        <div class="col-xs-10 col-xs-offset-2" data-ng-hide="isReadyForSave() || userCustomers.length==0 || newDoc.Company.IsLocked==null || !newDoc.Company.IsLocked">
+                            <div class="text-danger">
+                                יש למלות פרטים כדי לאפשר יצירת המסמך
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </fieldset>
+    </form>
+</div>
+<div class="col-xs-6 zoom">
+    <div data-ng-include="'Templates/newdoc.tmpl.htm'" class="preview pull-right"></div>
+</div>
+
+<!-- add pay item -->
+<!--<div id="popupBottom" class="popover">
+    <div class="arrow"></div>
+    <h3 class="popover-title">Bottom</h3>
+    <div class="popover-content">
+        <p>
+            Sed posuere consectetur est at lobortis. Aenean eu leo quam.
+            Pellentesque ornare sem lacinia quam venenatis vestibulum.
+            <a href="#" class="btn btn-default helloWorld">Click me</a>
+        </p>
+    </div>
+</div>-->

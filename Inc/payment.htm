@@ -1,0 +1,115 @@
+﻿<form class="form-horizontal" id="f461" name="f461" novalidate action="javascript:UpdatePayData()">
+    <fieldset>
+        <!-- tabs panel -->
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#allDocNumeration" data-toggle="tab"
+                   data-ng-click="tabItemCardClick($event)">פרטי תשלום</a>
+            </li>
+            <!--<li class="pull-left" data-ng-show="isChangedDocConfig(null)">
+                <span class="label label-warning w-not-saved">לא שמור</span>
+            </li>-->
+        </ul>
+
+        <div class="col-md-12 tab-content">
+            <div class="form-group row">
+                <label for="inputFName" class="col-lg-2 control-label">תאריך</label>
+                <div class="col-lg-10">
+                    <div class='input-group date' id='datetimepickerNewPay'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-btn">
+                            <span class="input-group-addon" style="height: 38px;">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputFName" class="col-lg-2 control-label">סכום בש"ח</label>
+                <div class="col-lg-10">
+                    <input type="number" class="form-control" data-ng-model="selectedPayment.Total" min="0.01" step="0.01" name="Total"/>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputEmail" class="col-lg-2 control-label">צורת תשלום</label>
+                <div class="col-lg-10">
+                    <select class="form-control" data-ng-model="selectedPayment.Type"
+                            data-ng-options="p as p.Type for p in payConfig track by p.Id"></select>
+                </div>
+            </div>
+            <section style="height:220px;">
+                <section data-ng-show="selectedPayment.Type.Id == 1 || selectedPayment.Type.Id == 3">
+                    <div class="form-group row">
+                        <label for="inputLName" class="col-lg-2 control-label">שם/מספר בנק</label>
+                        <div class="col-lg-10">
+                            <select class="form-control" data-ng-model="selectedPayment.Bank"
+                                    data-ng-options="p as p.Name for p in banks | orderBy: 'Name' track by p.Id"></select>
+                            <select class="form-control" data-ng-model="selectedPayment.Bank" data-ng-change="initBranch()"
+                                    data-ng-options="p as p.Id for p in banks | orderBy: 'Id' track by p.Id " style="width:80px"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-2 control-label">שם/מספר סניף</label>
+                        <div class="col-lg-10">
+                            <select class="form-control" data-ng-model="selectedPayment.Branch"
+                                    data-ng-options="p as p.Name for p in branches | orderBy: 'Name' | filter: {BankID: selectedPayment.Bank.Id} track by p.Id">
+                            </select>
+                            <select class="form-control" data-ng-model="selectedPayment.Branch"
+                                    data-ng-options="p as p.Id for p in branches | orderBy: 'Id' | filter: {BankID: selectedPayment.Bank.Id} track by p.Id" style="width:80px"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword" class="col-lg-2 control-label">מספר חשבון</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" placeholder="מספר חשבון" data-ng-model="selectedPayment.Account" />
+                        </div>
+                    </div>
+                </section>
+                <section data-ng-show="selectedPayment.Type.Id == 1">
+                    <div class="form-group row">
+                        <label for="inputFName" class="col-lg-2 control-label">מספר צ'ק</label>
+                        <div class="col-lg-10">
+                            <input type="text" class="form-control" data-ng-model="selectedPayment.Check" />
+                        </div>
+                    </div>
+                </section>
+                <section data-ng-show="selectedPayment.Type.Id == 4">
+                    <div class="form-group row">
+                        <label for="inputFName" class="col-lg-2 control-label">תיאור</label>
+                        <div class="col-lg-10">
+                            <textarea class="form-control" rows="3" id="textArea" style="width:280px"
+                                      data-ng-model="selectedPayment.Comments" placeholder="תיאור של האופן התשלום"></textarea>
+                        </div>
+                    </div>
+                </section>
+            </section>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-primary btn-large" data-ng-click="submitted=true;isPayUpdate=false"
+                            data-ng-show="payForUpdate==-1" data-ng-disabled="!isValidPayment()">
+                        הוספה
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-large" data-ng-disabled="!isValidPayment()"
+                            data-ng-click="submitted=true;isPayUpdate=true" data-ng-show="payForUpdate>-1">
+                        עידכון
+                    </button>
+                    <button type="button" class="btn btn-warning btn-large" data-ng-click="submitted=true;resetPayment()"
+                            data-ng-show="isPayChanged()">
+                        איתחול
+                    </button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<script>
+
+    $().ready(function () {
+        scope.itemValidator = $("#f461").validate(payEditConfig.toValidation());
+    })
+
+   
+</script>

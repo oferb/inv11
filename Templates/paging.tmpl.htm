@@ -1,0 +1,20 @@
+﻿<div class="text-center">
+    <ul class="pagination" data-ng-if="1 < paging[index].pageCount()">
+        <li data-ng-if="boundaryLinks" data-ng-class="{ disabled : paging[index].first()}" data-ng-hide="paging[index].first()">
+            <a href="#" data-ng-click="paging[index].setPage(1)">&laquo;</a>
+        </li>
+        <li data-ng-if="directionLinks" data-ng-class="{ disabled : paging[index].current == 1 }" data-ng-hide="paging[index].current == 1">
+            <a href="#" data-ng-click="decCurrent(index)" class="ng-binding">‹</a>
+        </li>
+        <li data-ng-repeat="pageNumber in getShownButtons(paging[index]) track by $index" data-ng-hide="pageNumber=='...'" 
+            data-ng-class="{'active': paging[index].current == pageNumber, 'disabled' : pageNumber=='...' }">
+            <a href="#" data-ng-click="paging[index].setPage(pageNumber)">{{ pageNumber }}</a>
+        </li>
+        <li data-ng-if="directionLinks" data-ng-class="{ disabled : paging[index].last() }" data-ng-hide="paging[index].last()">
+            <a href="#" data-ng-click="incCurrent(index)" class="ng-binding">›</a>
+        </li>
+        <li data-ng-if="boundaryLinks" data-ng-class="{ disabled : paging[index].last() }" data-ng-hide="paging[index].last()">
+            <a href="#" data-ng-click="paging[index].setPage(paging[index].pageCount())">&raquo;</a>
+        </li>
+    </ul>
+</div>

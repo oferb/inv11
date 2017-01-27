@@ -1,0 +1,195 @@
+﻿<form class="form-horizontal" id="f441" name="f441" novalidate action="javascript:UpdateItemData()">
+    <fieldset>
+        <!-- subtitle -->
+        <div class="alert alert-dismissible alert-info h-info container-fluid">
+            <div class="row-fluid">
+                <button type="button" class="btn btn-primary btn-xs pull-left"
+                        data-ng-click="selection.itemId=null"
+                        data-ng-show="selectedItem.Id!=null && isItemSelectedTab!=0">
+                    ביטול בחירה
+                </button>
+                <h3 class="pull-right">{{selectedItemTitle()}}</h3>
+            </div>
+        </div>
+        <!-- tabs panel -->
+        <ul class="nav nav-tabs" id="prodCardTabs">
+            <li class="active">
+                <a href="#allItems" data-toggle="tab"
+                   data-ng-click="tabItemCardClick($event)">רשימת הפריטים</a>
+            </li>
+            <!-- card tabs -->
+            <li>
+                <a href="#itemCard" data-toggle="tab"
+                   data-ng-show="selectedItem.Id!=null" data-ng-hide="isItemSelectedTab==0"
+                   data-ng-click="tabItemCardClick($event)">
+                    פרטי הפריט<span class="badge b-red" data-ng-show="itemValidatorErrors>0">{{itemValidatorErrors}}</span>
+                </a>
+            </li>
+            <li class="pull-left" data-ng-show="isChangedItemField(null)">
+                <span class="label label-warning w-not-saved">לא שמור</span>
+            </li>
+        </ul>
+
+        <div class="col-md-12 tab-content">
+            <div class="tab-pane active in tm-row" id="allItems"> <!--fade-->
+                <!-- search/filters panel -->
+                <table style="width:100%">
+                    <tr>
+                        <td style="padding:0px">
+                            <div class="row tm-panel well">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control input-sm" placeholder="חפש" style="margin-left:0px;"
+                                               data-ng-model="search.itemKey" />
+                                        <div class="input-group-btn" data-ng-style="{'visibility': search.itemKey.trim()=='' ? 'hidden':'visible'}">
+                                            <button type="button" class="btn btn-default btn-sm" title="בטל" data-ng-click="search.itemKey=''">
+                                                <span class="glyphicon glyphicon-remove"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="col-md-3">
+                                    <select class="form-control input-sm" data-ng-model="search.docCompany" data-convert-to-number 
+                                            data-ng-disabled="userProducts.length==0">
+                                        <option data-ng-repeat="comp in userCompaniesBac" value="{{comp.Id}}">{{comp.Name}}</option>
+                                    </select>
+                                </div>-->
+                                <div class="col-md-2"><div class="found-items"><span>סה'כ פריטים: </span>{{paging[0].list.length}}</div></div>
+                                <div class="col-md-3 col-md-offset-3">
+                                    <div class="col-md-6">
+                                        <div class="input-group tm-float">
+                                            <a href="#" class="btn btn-sm btn-info" data-ng-show="hasSelectedItems() && userProducts.length>0" data-ng-click="showPage(11,$event)">שלח למסמך</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group tm-float">
+                                            <a href="#" class="btn btn-primary btn-sm" data-ng-click="selection.itemId=0;forceChangeItem(0)">הוספת פריט</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- no results -->
+                <table style="width:100%" data-ng-show="paging[0].list.length==0">
+                    <tr>
+                        <td>
+                            <div class="alert alert-warning tm-panel">
+                                <p style="text-align:center">אין פריטים</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <!-- table -->
+                <div style="min-height:430px;">
+                    <table class="table table-striped table-hover tm-grid" data-ng-show="paging[0].list.length>0">
+                        <thead style="cursor: pointer;">
+                            <tr>
+                                <th style="text-align:center;width:90px" title="בחר ליצירת מסמך חדש">
+                                    <div class="btn-group">
+                                        <a href="#" class="btn btn-xs" data-ng-click="showPage(11,$event)" data-ng-disabled="!hasSelectedItems()"
+                                           data-ng-class="{'btn-info': hasSelectedItems() ,'btn-default': !hasSelectedItems() } ">{{hasSelectedItems() ? "שלח" : "בחר"}}</a>
+                                        <a href="#" class="btn btn-default dropdown-toggle btn-xs" data-toggle="dropdown"><span class="caret"></span></a>
+                                        <ul class="dropdown-menu h-dd">
+                                            <li><a href="#" data-ng-click="showPage(11,$event)">שלח</a></li>
+                                            <li class="divider"></li>
+                                            <li><a href="#" data-ng-click="selectAllItems()">בחר הכל</a></li>
+                                            <li><a href="#" data-ng-click="clearSelectedItems()">בטל את הבחירה</a></li>
+                                        </ul>
+                                    </div>
+                                </th>
+                                <th><span data-ng-click="changeSorting(itemSort,'Id')"><span data-ng-class="selectedCls(itemSort,'Id')"></span><a href="#">מס</a></span></th>
+                                <th><span data-ng-click="changeSorting(itemSort,'Name')"><span data-ng-class="selectedCls(itemSort,'Name')"></span><a href="#">שם הפריט</a></span></th>
+                                <th><span data-ng-click="changeSorting(itemSort,'Price')"><span data-ng-class="selectedCls(itemSort,'Price')"></span><a href="#">מחיר</a></span></th>
+                                <th><span data-ng-click="changeSorting(itemSort,'Makat')"><span data-ng-class="selectedCls(itemSort,'Makat')"></span><a href="#">מק'ט</a></span></th>
+                                <th><span data-ng-click="changeSorting(itemSort,'Company')"><span data-ng-class="selectedCls(itemSort,'Description')"></span><a href="#">תיאור</a></span></th>
+                                <th style="width:22px;text-align:center" title="מחיקה">מ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-ng-repeat="p in userProducts | filter: { IsArchive: false, CompanyID: search.docCompany } | orderBy:itemSort.column:itemSort.descending | limitTo: pageSize : paging[0].from">
+                                <td style="text-align:center">
+                                    <a href="#" title="שלח למסמך" data-ng-click="p.Selected=true;showPage(11)"><span class="glyphicon glyphicon-circle-arrow-right"></span></a><input type="checkbox" data-ng-model="p.Selected" />
+                                </td>
+                                <td>{{p.Id}}</td>
+                                <td><a href="#" data-ng-click="selection.itemId=p.Id;forceChangeItem(p.Id)" onclick="$('#f441 .nav-tabs li:eq(1) a').tab('show')">{{p.Name}}</a></td>
+                                <td>{{p.Price}}</td>
+                                <td>{{p.Makat}}</td>
+                                <td>{{getShortStr(p.Description,20)}}</td>
+
+                                <td>
+                                    <a href="#"
+                                       data-mwl-confirm
+                                       title="מחיקה"
+                                       data-message="למחוק את הפריט?"
+                                       data-confirm-text="מחיקה"
+                                       data-cancel-text="ביטול"
+                                       data-placement="right"
+                                       data-on-confirm="deleteProduct(p.Id)"
+                                       data-confirm-button-type="danger"
+                                       data-cancel-button-type="default">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- paging ?itemsUpdated='+updateTime-->
+                <div data-ng-include="'Templates/paging.tmpl.htm?itemsUpdated='+updateTime" onload="index=0"></div>
+            </div>
+            <!-- card page -->
+            <div class="tab-pane" id="itemCard"> <!--fade in-->
+                <div class="form-group row" data-ng-repeat="x in itemEditConfig.data" data-ng-class="{'has-warning':isChangedItemField(x.param)}">
+                    <label class="col-md-3 control-label">{{x.label}}</label>
+                    <div class="col-md-9">
+                        <input data-ng-hide="x.type=='listOfCompanies' || x.type=='textarea'" type="{{x.type}}" class="form-control" placeholder="{{x.label}}"
+                               data-ng-model="selectedItem[x.param]" dir="{{x.dir}}" name="{{x.param}}" />
+                        <!--<select class="form-control" data-ng-model="selectedItem[x.param]" data-ng-show="x.type=='listOfCompanies'" data-convert-to-number>
+                            <option data-ng-repeat="comp in userCompaniesBac" value="{{comp.Id}}" data-ng-selected="selectedItem[x.param]==comp.Id">{{comp.Name}}</option>
+                        </select>-->
+                        <textarea class="form-control" style="width:280px" rows="3" id="textArea" data-ng-model="selectedItem['Description']" data-ng-show="x.type=='textarea'"></textarea>
+                        <!--<span></span>-->
+                    </div>
+                </div>
+            </div>
+            <!-- card buttons -->
+            <div style="min-height:60px">
+                <!--<hr />-->
+                <div class="form-group row" data-ng-show="isItemSelectedTab>0">
+                    <div class="col-md-9 col-md-offset-3">
+                        <button type="submit" class="btn btn-primary btn-large" data-ng-click="submitted=true;"
+                                data-ng-disabled="itemValidatorErrors>0 || (selectedItem.Id==0 && isNewItemFormNotFilled())">
+                            שמירה
+                        </button>
+                        <button type="button" class="btn btn-warning btn-large" data-ng-disabled="itemValidatorErrors>0 || (selectedItem.Id==0 && isNewItemFormNotFilled())"
+                                data-ng-click="submitted=true;resetErrorItemForms()">
+                            איתחול
+                        </button>
+                        <button type="button" class="btn btn-info btn-large" data-ng-click="selectedItem.Selected=true;showPage(11,$event)"
+                                data-ng-hide="isChangedItemField(null) || selectedItem.Id == 0">
+                            שלח ל{{newDoc.Title}}
+                        </button>
+                        <div class="alert alert-warning col-md-3 pull-left but-height"
+                             data-ng-show="selectedItem.Id==0 && isNewItemFormNotFilled()">
+                            יש למלא שדות הנדרשים
+                        </div>
+                        <div class="alert alert-danger col-md-3 pull-left but-height" data-ng-show="itemValidatorErrors>0">
+                            <span data-ng-show="itemValidatorErrors==1">שדה 1 לא עבר וולידציה</span>
+                            <span data-ng-show="itemValidatorErrors>1">{{itemValidatorErrors}} שדות לא עברו וולידציה</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+<script>
+
+    $().ready(function () {
+        // validation instructions
+        scope.itemValidator = $("#f441").validate(itemEditConfig.toValidation());
+    })
+</script>

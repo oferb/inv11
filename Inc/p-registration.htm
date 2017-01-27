@@ -1,0 +1,200 @@
+﻿<div class="col-md-12">
+    <div class="form-horizontal">
+        <!--<h4>הירשמו עכשיו וקבלו 30 ימי ניסיון חינם וללא התחייבות</h4>-->
+       <hr />
+        <form name="regForm" id="regForm" class="form" novalidate action="javascript:Register()">
+
+            <!--<h4>פרטים אישיים</h4>
+            <hr />-->
+            <!--<div class="form-group" style="height:24px">
+                <div class="col-md-3 col-lg-offset-2 error-text" data-ng-show="regError">
+                    הדואר האלקטרוני כבר רשום במערכת
+                </div>
+            </div>-->
+            <div class="form-group">
+                <div class="col-md-10 col-md-offset-2">
+                    <h3 style="margin:0px">פרטים אישיים</h3>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">דואר אלקטרוני</label>
+                <div class="col-md-10">
+                    <input name="userMailN" type="email" id="userMailN" class="form-control" placeholder="דואר אלקטרוני">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">שם פרטי</label>
+                <div class="col-md-10">
+                    <input name="userFName" type="text" id="userFName" class="form-control" placeholder="שם פרטי">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">שם משפחה</label>
+                <div class="col-md-10">
+                    <input name="userLName" type="text" id="userLName" class="form-control" placeholder="שם משפחה">
+                </div>
+            </div>
+            <!--<div class="form-group">
+                <label class="col-md-2 control-label">מזהה לקוח/חברה</label>
+                <div class="col-md-10">
+                    <input name="userIdent" type="text" id="userIdent" class="form-control" placeholder="מזהה לקוח/חברה">
+                </div>
+            </div>-->
+            <div class="form-group">
+                <label class="col-md-2 control-label">סיסמא</label>
+                <div class="col-md-10">
+                    <input name="userPasswordN" type="password" id="userPasswordN" class="form-control" placeholder="סיסמא">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">אימות סיסמא</label>
+                <div class="col-md-10">
+                    <input name="userPasswordConf" type="password" id="userPasswordConf" class="form-control" placeholder="אימות סיסמא">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-md-10 col-md-offset-2">
+                    <h3 style="margin:0px">פרטי בית עסק</h3>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">שם העסק</label>
+                <div class="col-md-10">
+                    <input name="cName" type="text" id="cName" class="form-control" placeholder="שם העסק">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">מספר עוסק מורשה/ חפ / ת.ז</label>
+                <div class="col-md-10">
+                    <input name="cIdent" type="text" id="cIdent" class="form-control" placeholder="מספר עוסק מורשה/ חפ / ת.ז">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">רחוב ומס' בית</label>
+                <div class="col-md-10">
+                    <input name="cStreet" type="text" id="cStreet" class="form-control" placeholder="רחוב ומס' בית">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">עיר</label>
+                <div class="col-md-10">
+                    <input name="cCity" type="text" id="cCity" class="form-control" placeholder="עיר">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">מדינה</label>
+                <div class="col-md-10">
+                    <input name="cCountry" type="text" id="cCountry" class="form-control" placeholder="מדינה">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">אימייל</label>
+                <div class="col-md-10">
+                    <input name="cMail" type="text" id="cMail" class="form-control" placeholder="אימייל">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">טלפון</label>
+                <div class="col-md-10">
+                    <input name="cPhone" type="text" id="cPhone" class="form-control" placeholder="טלפון">
+                </div>
+            </div>
+
+
+
+
+
+            <div class="form-group" style="height:60px;">
+                <label class="col-md-2 control-label" style="margin-top:4px;">אני מסכים לתנאי שימוש</label>
+                <div class="col-md-10">
+                    <input name="userAgree" type="checkbox" id="userAgree" data-ng-model="isUserAgree" style="margin-top:18px;" /> <!--width:20px; height:20px;-->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-primary btn-large" data-ng-click="submitted=true">אישור</button>
+                    <button type="reset" class="btn btn-default btn-large" data-ng-click="submitted=true" onclick="ResetErrorMessages()">
+                        איתחול
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="col-md-offset-2 col-md-10">
+            <a href="#" data-ng-click="showPage(6)">שכחתי סיסמא</a>
+        </div>
+        <div class="col-md-offset-2 col-md-10">
+            <a href="#" data-ng-click="showPage(5)">כניסה למשתמש רשום</a>
+        </div>
+    </div>
+</div>
+<script>
+    $().ready(function () {
+        // validate signup form on keyup and submit
+        $("#regForm").validate({
+            rules: {
+                userFName: "required",
+                userLName: "required",
+                //userIdent: "required",
+                userPasswordN: {
+                    required: true,
+                    minlength: 3
+                },
+                userPasswordConf: {
+                    required: true,
+                    minlength: 3,
+                    equalTo: "#userPasswordN"
+                },
+                userMailN: {
+                    required: true,
+                    email: true
+                },
+                cName: "required",
+                cIdent: "required",
+                cStreet: "required",
+                cCity: "required",
+                cCountry: "required",
+                cPhone: "required",
+                cMail: {
+                    required: true,
+                    email: true
+                },
+                userAgree: "required"
+            },
+            messages: {
+                userFName: "שם פרטי הינו שדה חובה",
+                userLName: "שם משפחה הינו שדה חובה",
+                userIdent: "מזהה לקוח/חברה הינו שדה חובה",
+                cName: "שם העסק הינו שדה חובה",
+                cIdent: "עוסק מורשה/ חפ / ת.ז הינו שדה חובה",
+                cStreet: "רחוב הינו שדה חובה",
+                cCity: "עיר הינו שדה חובה",
+                cCountry: "מדינה הינו שדה חובה",
+                cPhone: "טלפון הינו שדה חובה",
+                cMail: {
+                    required: "דואר אלקטרוני הינו שדה חובה",
+                    email: "הדואר פורמט אינו תקין"
+                },
+                userPasswordN: {
+                    required: "סיסמא הינו שדה חובה",
+                    minlength: "אורך הסיסמא המינימלי הינו 3"
+                },
+                userPasswordConf: {
+                    required: "אימות סיסמא הינו שדה חובה",
+                    minlength: "אורך הסיסמא המינימלי הינו 3",
+                    equalTo: "הסיסמא אינו תואמת"
+                },
+                userMailN: {
+                    required: "דואר אלקטרוני הינו שדה חובה",
+                    email: "הדואר פורמט אינו תקין"
+                },
+                userAgree: "הסכמה הינו שדה חובה"
+            }
+        });
+    });
+</script>
