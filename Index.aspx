@@ -323,22 +323,26 @@
                                             <option value="0" title="כל סוגי המסמכים" selected="selected">כל סוגי המסמכים</option>
                                         </select>
                                     </td>
-                                    <td style="width: 16%; text-align:center;">&nbsp;
-                                        <a href="#" data-ng-click="search.docIncCanceled=!search.docIncCanceled"><span class="glyphicon"
-                                            data-ng-class="{'glyphicon-check':search.docIncCanceled,'glyphicon-unchecked':!search.docIncCanceled}" style=" vertical-align: central;"></span>
-                                            <label style="text-align:center;">
+                                    <td style="width: 8%">&nbsp;
+                                        <a href="#" data-ng-click="search.docIncCanceled=!search.docIncCanceled"><span class="glyphicon" 
+                                            data-ng-class="{'glyphicon-check':search.docIncCanceled,'glyphicon-unchecked':!search.docIncCanceled}""></span>
+                                            <label style="align-self:center">
                                                 
                                                         כולל 
-                                                <br />ביטולים
-                                                &nbsp;
+                                                <br />ביטולים 
+                                                
                                             </label>
                                         </a>
-                                                                            <%--changed by ortal&nofar--%>
+                                        </td>
+                                        <td style="width: 8%">&nbsp;
+                                        <%--changed by ortal&nofar--%>
                                         <a href="#" data-ng-if="search.docType==8 || search.docType==11 || search.docType==12" 
-                                            data-ng-click="search.docIncClosed=!search.docIncClosed"><span class="glyphicon"
+                                            data-ng-click="search.docIncClosed=!search.docIncClosed"><span class="glyphicon" 
                                             data-ng-class="{'glyphicon-check':search.docIncClosed,'glyphicon-unchecked':!search.docIncClosed}"></span>
                                             <label>
-                                                        כולל סגורים
+                                                        כולל 
+                                                <br />סגורים
+                                                
                                             </label>
                                         </a>
                                         <%--end--%>
