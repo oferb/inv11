@@ -26,7 +26,7 @@ public class Utils
     {
         using (var db = new DBInvoiceEntities())
         {
-            return db.tbUsers.Where(i => i.Email == mail && i.Password == password && (!i.IsArchive.HasValue || !(bool)i.IsArchive)).FirstOrDefault();
+return db.tbUsers.Where(i => i.Email == mail && i.Password == password && (!i.IsArchive.HasValue || !(bool)i.IsArchive)).FirstOrDefault();
         }
 
        
