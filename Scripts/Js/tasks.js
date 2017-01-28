@@ -402,7 +402,7 @@ function UpdateDocConfig() {
 }
 
 Date.prototype.toJSON = function () { return moment(this).format(); }
-
+//changed by ortal&nofar
 function SaveDocument() {
     scope.FinallizeDoc();
     scope.newDoc.Paid.Total = scope.calcPaymentsTotal();
@@ -411,6 +411,7 @@ function SaveDocument() {
         data: scope.newDoc,
         items: Enumerable.From(scope.userProducts).Where(function (s) { return s.Selected }).ToArray(),
         payments: scope.docPayments,
+        documents: scope.idsToShowHC[scope.newDoc.Type],
         calc: scope.calcObject()
     };
     var initId = scope.newDoc.Id;
@@ -454,7 +455,7 @@ function SaveDocument() {
         }
     });
 }
-
+//changed by ortal&nofar
 function SaveAsPdf() {
     scope.FinallizeDoc();
     scope.newDoc.CreationDate = moment().format();
@@ -463,6 +464,7 @@ function SaveAsPdf() {
         data: scope.newDoc,
         items: Enumerable.From(scope.userProducts).Where(function (s) { return s.Selected }).ToArray(),
         payments: scope.docPayments,
+        documents: scope.idsToShowHC[scope.newDoc.Type],
         calc: scope.calcObject()
     };
     if (scope.cancelID != null) {

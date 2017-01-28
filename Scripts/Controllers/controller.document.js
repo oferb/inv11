@@ -1242,6 +1242,7 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
         if (value) {
             $scope.idsToShowSC.push(p);
             p.isCheckd = true;
+            $scope.idsToShowSC
         }
         else {
             index = $scope.idsToShowSC.indexOf(p);

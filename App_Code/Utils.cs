@@ -463,6 +463,7 @@ return db.tbUsers.Where(i => i.Email == mail && i.Password == password && (!i.Is
         var calc = data["calc"];
         var items = data["items"];
         var payments = data["payments"];
+        var documents = data["documents"];
 
         try
         {
@@ -475,7 +476,8 @@ return db.tbUsers.Where(i => i.Email == mail && i.Password == password && (!i.Is
                 tbCustomer customer = db.tbCustomers.FirstOrDefault(x => x.Id == custId);
                 if(id==0){
                     rec = new tbUserDocument();
-                }else{
+                }
+                else{
                     rec = db.tbUserDocuments.Where(i => i.Id == id).FirstOrDefault();
                 }
                 rec.DocumentType = Convert.ToInt32(obj["Type"]);
@@ -533,15 +535,15 @@ return db.tbUsers.Where(i => i.Email == mail && i.Password == password && (!i.Is
                 //else { rec.PaidTotal = isCanceled ? 0.01M : Convert.ToDecimal(obj["Paid"]["Total"]); }
 
                 //if (rec.DocumentType == 11) changed by ortal&nofar
-                if (rec.DocumentType == 12)
-                {
-                    rec.DocStatus = Convert.ToInt32(obj["DocStatus"]);
-                }
-                if (rec.DocumentType == 8 || rec.DocumentType == 11)
-                {
-                    rec.isClosed = Convert.ToInt32(obj["isClosed"]);
-                    rec.ParentDocID = Convert.ToInt32(obj["ParentDocID"]);
-                }
+                //if (rec.DocumentType == 12)
+                //{
+                //    rec.DocStatus = Convert.ToInt32(obj["DocStatus"]);
+                //}
+                //if (rec.DocumentType == 8 || rec.DocumentType == 11)
+                //{
+                //    //rec.isClosed = Convert.ToInt32(obj["isClosed"]);
+                //    //rec.ParentDocID = Convert.ToInt32(obj["ParentDocID"]);
+                //}
 
 
                 if (rec.DocumentType == 2 || rec.DocumentType == 3)
@@ -589,6 +591,20 @@ return db.tbUsers.Where(i => i.Email == mail && i.Password == password && (!i.Is
                         {
                             db.tbDocumentPayments.Remove(d);
                         }
+                    }
+
+                    //update closed and related documents info //by ortal&nofar
+                    if (rec.DocumentType == 11 || rec.DocumentType == 12)
+                    {
+                        int SubId = 0;
+                        foreach (var d in documents)
+                        {
+                            SubId = (d["Id"]);
+                            var toCloseDoc = db.tbUserDocuments.Where(i => i.Id == SubId).FirstOrDefault();
+                            toCloseDoc.isClosed = true;
+                            toCloseDoc.ParentDocID = rec.Id;
+                        }
+
                     }
 
                     // add to products
