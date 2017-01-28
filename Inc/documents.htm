@@ -14,12 +14,15 @@
                 </table>
                 <!-- table -->
                 <div style="min-height:430px;">
+                    
                     <table class="table table-striped table-hover tm-grid" data-ng-show="filteredDocuments().length>0">
                         <thead>
                             <tr>
                                 <th style="width:30px;" title="הורדה בקובץ יחיד לחשבשבת">ח</th>
-                                <th style="width:30px; align-self:center;" data-ng-if="search.docType==8 || search.docType==12"><span data-ng-if="search.docType==11" title="בחר" align="center" class="glyphicon glyphicon-check"></span></th>
+                                <!--changed by ortal&nofar-->
+                                <th style="width:30px; align-self:center;" data-ng-if="search.docType==8 || search.docType==11"><span data-ng-if="search.docType==8 || search.docType==11" title="בחר" align="center" class="glyphicon glyphicon-check"></span></th>
                                 <th data-ng-if="search.docType==11 || search.docType==12"><span data-ng-if="search.docType==11 || search.docType==12" title="הרחב" class="glyphicon glyphicon-plus"></span></th>
+                                <!--end-->
                                 <th><span data-ng-click="changeSorting(docSort,'Id')"><span data-ng-class="selectedCls(docSort,'Id')"></span><a href="#">מס</a></span></th>
                                 <th><span data-ng-click="changeSorting(docSort,'DocumentNumber')"><span data-ng-class="selectedCls(docSort,'DocumentNumber')"></span><a href="#">מס' סידורי</a></span></th>
                                 <th><span data-ng-click="changeSorting(docSort,'DocumentN')"><span data-ng-class="selectedCls(docSort,'DocumentN')"></span><a href="#">סוג מסמך</a></span></th>
@@ -29,8 +32,15 @@
                                 <th><span data-ng-click="changeSorting(docSort,'DateVal')"><span data-ng-class="selectedCls(docSort,'DateVal')"></span><a href="#">תאריך</a></span></th>
                                 <th><span data-ng-click="changeSorting(docSort,'DueDateVal')"><span data-ng-class="selectedCls(docSort,'DueDateVal')"></span><a href="#">לתשלום עד</a></span></th>
                                 <th style="width:132px;" colspan="4">עריכה/ביטול/שליחה</th>
-                                <th style="width:132px;" data-ng-if="search.docType==11 || search.docType==12"><span data-ng-click="changeSorting(docSort,'isClosed')"><span data-ng-class="selectedCls(docSort,'isClosed')"></span><a href="#">סטטוס</a></span></th>
-
+                                <!--changed by ortal&nofar-->
+                                <th style="width:132px;" data-ng-if="search.docType==8 || search.docType==11 || search.docType==12">
+                                <span data-ng-click="changeSorting(docSort,'isClosed')">
+                                    <span data-ng-class="selectedCls(docSort,'isClosed')"></span>
+                                    <a href="#">סטטוס
+                                    </a>
+                                </span>
+                                </th>
+                                <!--end-->
                             </tr>
                         </thead>
                         <tbody>
@@ -104,8 +114,8 @@
                                         <span class="glyphicon glyphicon-remove"></span>
                                     </a>
                                 </td>
-                                <td data-ng-if="search.docType==11 || search.docType==12">
-                                    <span class="glyphicon glyphicon-folder-close" style="color: grey;" title="סגור" data-ng-if="p.DocumentType==11 ||p.DocumentType==12"
+                                <td data-ng-if="search.docType==8 ||search.docType==11 || search.docType==12">
+                                    <span class="glyphicon glyphicon-folder-close" style="color: grey;" title="סגור" data-ng-if="p.DocumentType==8 || p.DocumentType==11 ||p.DocumentType==12"
                                           data-ng-show="p.isClosed"></span><!--|| dtpin(p.documenttype,[5,7,8]-->
                                     <a href="#" style="width:132px;" data-ng-click="getDocForHM(p.Id);" data-ng-show="!p.IsDraft && dtpIn(p.DocumentType,[1,2,3])" data-ng-if="p.DocumentType==11 ||p.DocumentType==12">
 
