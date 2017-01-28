@@ -43,8 +43,8 @@
                                 <!--end-->
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr data-ng-repeat="p in filteredDocumentsObj | orderBy:docSort.column:docSort.descending | limitTo: pageSize : paging[3].from" data-ng-class="{'success':p.Id==newDoc.Id}">
+                        <tbody data-ng-repeat="p in filteredDocumentsObj | orderBy:docSort.column:docSort.descending | limitTo: pageSize : paging[3].from">
+                            <tr data-ng-class="{'success':p.Id==newDoc.Id}">
                                 <td>
                                     <a href="#" data-ng-click="getDocForH(p.Id);" data-ng-show="!p.IsDraft && dtpIn(p.DocumentType,[1,2,3])">
                                         <span class="mif-file-download mif-2x" title="הורדה בקובץ יחיד לחשבשבת"></span>
@@ -117,18 +117,75 @@
                                 <td data-ng-if="search.docType==8 ||search.docType==11 || search.docType==12">
                                     <span class="glyphicon glyphicon-folder-close" style="color: grey;" title="סגור" data-ng-if="p.DocumentType==8 || p.DocumentType==11 ||p.DocumentType==12"
                                           data-ng-show="p.isClosed"></span><!--|| dtpin(p.documenttype,[5,7,8]-->
-                                    <a href="#" style="width:132px;" data-ng-click="getDocForHM(p.Id);" data-ng-show="!p.IsDraft && dtpIn(p.DocumentType,[1,2,3])" data-ng-if="p.DocumentType==8 ||p.DocumentType==11 ||p.DocumentType==12">
-                                       
+                                    <a href="#" style="width:132px;" data-ng-click="getDocForHM(p.Id);" data-ng-show="!p.IsDraft && dtpIn(p.DocumentType,[1,2,3])" data-ng-if="p.DocumentType==8 ||p.DocumentType==11 ||p.DocumentType==12"></a>
+                                </td>
+                            </tr>
+                            <tr data-ng-if="DocListOpen && p.Orders && p.Orders.length > 0" data-ng-repeat="o in p.Orders">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>{{o.Id}}</td>
+                                <td>{{o.DocumentNumber}}</td>
+                                <td>{{o.DocumentN}}</td>
+                                <td>{{o.CompanyN}}</td>
+                                <td>{{o.CustomerN}}</td>
+                                <td>{{o.DocumentType==3 || o.DocumentType==6 ? o.PaidTotal : o.Total}}</td>
+                                <td>{{o.DateV}}</td>
+                                <td>{{dueDate(o)}}</td>
+                                <td style="width:25px" class="left-but">
+                                    <a href="pdf1.aspx?id={{o.Id}}" target="_blank" id="dh_{{o.Id}}" style="color:#dd5600">
+                                        <span class="mif-file-pdf mif-2x" title="תצוגה/הורדה של PDF" data-ng-show="!o.IsDraft"></span>
+                                    </a>
+                                </td>
+                                <td class="left-but">
+                                    <a data-ng-href="{{docPreview(p)}}" target="_blank" id="dh_{{o.Id}}">
+                                        <span class="mif-file-text mif-2x" title="תצוגה" data-ng-show="!o.IsDraft"></span>
+                                    </a>
+                                </td>
+                                <td class="left-but">
+                                    <a href="#" data-ng-click="loadSavedDocForEdit(o.Id,0);" data-ng-show="o.IsDraft">
+                                        <!--|| dtpIn(o.DocumentType,[5,7,8])-->
+                                        <span class="mif-pencil mif-2x" title="עריכה"></span>
+                                    </a> <!--&& !dtpIn(o.DocumentType,[5,7,8])-->
+                                    <a href="#" data-ng-show="!o.IsDraft"
+                                       style="color:#1c4f81" data-ng-click="getdocToMail(p)" data-toggle="modal" data-target="#myModal">
+                                        <span class="glyphicon glyphicon-send" title="שליחה לדואר אלקטרוני"></span>
+                                    </a>
+                                </td>
+                                <td class="left-but">
+                                    <span class="mif-not mif-2x" style="color: #c81d23;" title="נהול"
+                                          data-ng-hide="o.IsDraft || dtpIn(o.DocumentType,[1,3,5,7,8])"></span>
+                                    <a href="#" data-ng-show="!o.IsDraft && dtpIn(o.DocumentType,[1,3]) && !o.IsCanceled"
+                                       data-ng-click="cancelDoc(p)" title="{{o.DocumentType == 1 ? 'ביטול חשבונית' : 'ביטול קבלה'}}"><span class="glyphicon glyphicon-transfer" style="color:red"></span></a> <!--o.DocumentType == 1 || o.DocumentType == 3-->
+
+                                    <span class="glyphicon glyphicon-transfer" style="color: grey;"
+                                          title="{{o.DocumentType == 1 ? 'חשבונית מס מבוטלת' : 'קבלה מבוטלת'}}"
+                                          data-ng-show="o.IsCanceled"></span><!--|| dtpin(o.documenttype,[5,7,8]-->
+                                    <a href="#" data-ng-show="o.IsDraft"
+                                       data-mwl-confirm
+                                       title="מחיקה"
+                                       data-message="למחוק את מסמך?"
+                                       data-confirm-text="מחיקה"
+                                       data-cancel-text="ביטול"
+                                       data-placement="right"
+                                       data-on-confirm="deleteUserDocument(o.Id)"
+                                       data-confirm-button-type="danger"
+                                       data-cancel-button-type="default">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                </td>
+                                <td data-ng-if="search.docType==8 ||search.docType==11 || search.docType==12">
+                                    <span class="glyphicon glyphicon-folder-close" style="color: grey;" title="סגור" data-ng-if="o.DocumentType==8 || o.DocumentType==11 ||o.DocumentType==12"
+                                          data-ng-show="o.isClosed"></span><!--|| dtpin(o.documenttype,[5,7,8]-->
+                                    <a href="#" style="width:132px;" data-ng-click="getDocForHM(o.Id);" data-ng-show="!o.IsDraft && dtpIn(o.DocumentType,[1,2,3])" data-ng-if="o.DocumentType==8 ||o.DocumentType==11 ||o.DocumentType==12">
+
                                     </a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                   
                 </div>
                 <!-- paging -->
-
-               
                 <div data-ng-include="'Templates/paging.tmpl.htm?docUpdated='+updateTime" onload="index=3"></div>
             </div>
 

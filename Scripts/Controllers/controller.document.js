@@ -767,6 +767,29 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
 
         }
         //$scope.loadPaging("userDocuments");
+
+        ////$scope.loadPaging("userDocuments");
+
+        //Work around - this method is called multiple times for no reason, will reset the Orders fields before each iteration
+        for (var i = 0 ; i < $scope.filteredDocumentsObj.length; i++)
+            if ($scope.filteredDocumentsObj[i].Orders)
+                $scope.filteredDocumentsObj[i].Orders=[];
+
+        for (var i = 0; i < $scope.userDocuments.length; i++) {
+            for (var j = 0; j < $scope.filteredDocumentsObj.length; j++) {
+                if ($scope.userDocuments[i].ParentDocID != null && $scope.userDocuments[i].ParentDocID != undefined
+                    && $scope.userDocuments[i].ParentDocID == $scope.filteredDocumentsObj[j].Id) {
+                    if (!$scope.filteredDocumentsObj[j].Orders)
+                        $scope.filteredDocumentsObj[j].Orders = [];
+                    $scope.filteredDocumentsObj[j].Orders.push($scope.userDocuments[i])
+                }
+            }
+        }
+
+        for (var i = 0 ; i < $scope.filteredDocumentsObj.length; i++)
+            if ($scope.filteredDocumentsObj[i].Orders)
+                console.log(i + " : " + $scope.filteredDocumentsObj[i].Orders);
+
         return $scope.filteredDocumentsObj;
     }
 
