@@ -1146,11 +1146,10 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
     $scope.DocListOpen = false;
     //$scope.DocListOpenShipping = false;
 
-    $scope.openDocLines = function (id) {
+    $scope.openDocLines = function (object) {
         //function
-
+        object.isClosed = !object.isClosed;
         //(id == 9 ? $scope.DocListOpenInvoice = !$scope.DocListOpenInvoice : $scope.DocListOpenShipping = !$scope.DocListOpenShipping)
-        $scope.DocListOpen = !$scope.DocListOpen
     }
     // send by mail
     $scope.docToMail = {};

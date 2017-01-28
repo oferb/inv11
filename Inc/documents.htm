@@ -58,9 +58,9 @@
                                     <input type="checkbox" data-ng-model="docCheckBox" data-ng-if="p.DocumentType==11" data-ng-change="linesToInvoice(docCheckBox,p)" ng-checked="{{p.isCheckd}}">
                                 </td>                                
                                 <td data-ng-if="search.docType==11 || search.docType==12">
-                                    <span data-ng-class="DocListOpen ? 'glyphicon glyphicon-minus' : 'glyphicon glyphicon-plus'" data-ng-if="p.DocumentType==11 || p.DocumentType==12"
-                                          data-ng-show="p.isClosed" data-ng-click="openDocLines(p.Id)"></span><!--|| dtpin(p.documenttype,[5,7,8]-->
-                                    <a href="#" style="width:30px;" data-ng-click="getDocForHM(p.Id);"
+                                    <span data-ng-class="p.isClose ? 'glyphicon glyphicon-minus' : 'glyphicon glyphicon-plus'" data-ng-if="p.DocumentType==11 || p.DocumentType==12"
+                                          data-ng-show="p.isClosed" data-ng-click="p.isClose=!p.isClose"></span><!--|| dtpin(p.documenttype,[5,7,8]-->
+                                    <a href="#" style="width:30px;"
                                        data-ng-show="!p.IsDraft && dtpIn(p.DocumentType,[1,2,3])" data-ng-if="p.DocumentType==11 || p.DocumentType==12">
                                     </a>
                                 </td>
@@ -120,7 +120,7 @@
                                     <a href="#" style="width:132px;" data-ng-click="getDocForHM(p.Id);" data-ng-show="!p.IsDraft && dtpIn(p.DocumentType,[1,2,3])" data-ng-if="p.DocumentType==8 ||p.DocumentType==11 ||p.DocumentType==12"></a>
                                 </td>
                             </tr>
-                            <tr data-ng-if="DocListOpen && p.Orders && p.Orders.length > 0" data-ng-repeat="o in p.Orders">
+                            <tr data-ng-if="p.isClose && p.Orders && p.Orders.length > 0" data-ng-repeat="o in p.Orders">
                                 <td></td>
                                 <td></td>
                                 <td></td>
