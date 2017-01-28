@@ -533,8 +533,16 @@ return db.tbUsers.Where(i => i.Email == mail && i.Password == password && (!i.Is
                 //else { rec.PaidTotal = isCanceled ? 0.01M : Convert.ToDecimal(obj["Paid"]["Total"]); }
 
                 //if (rec.DocumentType == 11) changed by ortal&nofar
-                if (rec.DocumentType == 11 || rec.DocumentType == 12)
+                if (rec.DocumentType == 12)
+                {
                     rec.DocStatus = Convert.ToInt32(obj["DocStatus"]);
+                }
+                if (rec.DocumentType == 8 || rec.DocumentType == 11)
+                {
+                    rec.isClosed = Convert.ToInt32(obj["isClosed"]);
+                    rec.ParentDocID = Convert.ToInt32(obj["ParentDocID"]);
+                }
+
 
                 if (rec.DocumentType == 2 || rec.DocumentType == 3)
                 {
