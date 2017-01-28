@@ -233,14 +233,15 @@
                     <thead>
                         <tr>
                             <th style="width:5%">מס</th>
-                            <th>מס תעודת משלוח</th>
+                            <th data-ng-show="newDoc.Type==12">מס תעודת משלוח</th>
+                            <th data-ng-show="newDoc.Type==11">מס הזמנה</th>
                             <th style="width:15%">סכום</th>
                             <th style="width:15%">תאריך</th>
 
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-ng-repeat="p in getIdesToShow()">
+                        <tr data-ng-if="newDoc.Type==12 || newDoc.Type==11" data-ng-repeat="p in getIdesToShow()">
                             <td>{{p.Id}}</td>
                             <td>{{p.DocumentNumber}}</td>
                             <td>{{p.Total}}</td>
@@ -251,7 +252,8 @@
                         <tr>
                             <td></td>
                             <td class="tot-cell">סה"כ (ש"ח):</td>
-                            <td> {{getSumOfShippingCertificates()}}</td>
+                            <td data-ng-if="newDoc.Type==12"> {{getSumOfSC()}}</td>
+                            <td data-ng-if="newDoc.Type==11"> {{getSumOfHC()}}</td>
                         </tr>
                     </tfoot>
                 </table>

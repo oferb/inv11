@@ -267,7 +267,7 @@
                         <span class="glyphicon glyphicon-save-file" style="display: inline-block; margin-left: 5px"
                             title="{{filteredDocumentsNDU()}} מסמכים מסוג חשבונית, קבלה ,חשבונית-קבלה וחשבונית זיכוי"></span>יצוא במבנה אחיד
                     </a>
-                    <span>סה'כ:</span><span class="label label-info" style="margin-left: 5px; margin-right: 5px;">{{filteredDocuments().length}}</span><span>מסמכים</span>
+                    <span>סה'כ:</span><span class="label label-info" style="margin-left: 5px; margin-right: 5px;">{{filteredDocumentsObj.length}}</span><span>מסמכים</span>
                 </div>
 
                 <div class="col-xs-6" data-ng-show="selectedPage==11" id="docTypeList">
