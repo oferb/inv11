@@ -37,7 +37,7 @@ app.expandControllerUser = function ($scope, $http) {
                     LoadUsersList();
                 }
 
-                console.log($scope.userData);
+                //console.log($scope.userData);
 
                 // companies
                 $scope.userCompaniesBac = angular.copy(o.Table1);
@@ -105,7 +105,7 @@ app.expandControllerUser = function ($scope, $http) {
 
                 // load reports
                 $scope.reportData = $scope.loadReportData();
-                console.log($scope.reportData);
+                //console.log($scope.reportData);
 
                 setTimeout(function () {
                     CloseWaitingMessage();
@@ -117,7 +117,7 @@ app.expandControllerUser = function ($scope, $http) {
                 $scope.isAllDataLoaded = true;
 
                 Tracer.Log("data is processed");
-                console.log(o);
+                //console.log(o);
                 $("#tempArea").val(JSON.stringify(o));
             }).error(function (status) {
                 //temp

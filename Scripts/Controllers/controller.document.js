@@ -86,7 +86,7 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
         $scope.tempDocBac = angular.copy($scope.newDoc);
         $scope.newDoc.Title = $scope.getDocTitle(newVal); 
         // reset newdoc form
-        if (!editSelectedDoc)
+        if (!$scope.editSelectedDoc)
             $scope.resetNewDocument();
     }, true);
 
@@ -628,15 +628,18 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
 
     $scope.setDocType = function (n) {
         $scope.newDoc.Type = n;
+        if (n = 12)
+            n = 11;
+        $scope.search.docType = n;
         $scope.newDoc.Title = $scope.getDocTitle($scope.newDoc.Type);
-        if (n == 12) {
-            $scope.doc12Search = 1;
-            $scope.filteredDocuments();
-            $scope.doc12Search = 0;
+        //if (n == 12) {
+        //    $scope.doc12Search = 1;
+        //    $scope.filteredDocuments();
+        //    $scope.doc12Search = 0;
         //    $('#selType1').selectpicker('val', 11);
         //    $scope.loadPaging("userDocuments");
 
-        }
+        //}
 
 
     }
@@ -719,13 +722,12 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
     $scope.filteredDocumentsObj = null;
     $scope.lastFilter = moment();
     $scope.filteredDocuments = function () {
-       
+    
         if (!$scope.isAllDataLoaded) return;
-
         var td = parseInt(moment().diff($scope.lastFilter, 'milliseconds'));
         if (td > 500 || $scope.filteredDocumentsObj == null || typeof($scope.filteredDocumentsObj) == "undefined") {
             $scope.lastFilter = moment();
-            if (!$scope.isDocFiltered() && !$scope.fromRangeChange && !$scope.doc12Search) {
+            if (!$scope.isDocFiltered() && !$scope.fromRangeChange) {
                 $scope.filteredDocumentsObj =  Enumerable.From($scope.userDocuments)
                             .Where(function (s) {
                                 return s.CompanyID == $scope.search.docCompany;
@@ -734,8 +736,6 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
                 $scope.filteredDocumentsObj = Enumerable.From($scope.userDocuments)
                             .Where(function (s) {   
                                var docType= $scope.search.docType
-                               if ($scope.doc12Search == 1)
-                                   docType= 11; 
                                 return (($scope.search.docCat == 0 || ($scope.search.docCat == 1 && !s.IsDraft) || ($scope.search.docCat == 2 && s.IsDraft)) // cat
                                     //&& ($scope.search.docCompany == 0 || (s.CompanyID == $scope.search.docCompany))
                                     && (s.CompanyID == $scope.search.docCompany)
@@ -1240,8 +1240,8 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
     };
     //changed by #ortal&nofar# //for index
     $scope.linesToSCSel = function () {
-        if ($scope.idsToShowHC) {
-            ar = $scope.idsToShowHC;
+        if ($scope.idsToShowHC[$scope.newDoc.Type]) {
+            ar = $scope.idsToShowHC[$scope.newDoc.Type];
             return ar.length;
         }
 
@@ -1258,14 +1258,16 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
     $scope.linesToInvoice = function (value, p) {
         if (!$scope.idsToShowHC)
             $scope.idsToShowHC = [];
+        if (!$scope.idsToShowHC[$scope.newDoc.Type])
+            $scope.idsToShowHC[$scope.newDoc.Type] = [];
         if (value) {
-            $scope.idsToShowHC.push(p);
+            $scope.idsToShowHC[$scope.newDoc.Type].push(p);
             p.isCheckd = true;
         }
         else {
-            index = $scope.idsToShowHC.indexOf(p);
+            index = $scope.idsToShowHC[$scope.newDoc.Type].indexOf(p);
             if (index > -1) {
-                $scope.idsToShowHC.splice(index, 1);
+                $scope.idsToShowHC[$scope.newDoc.Type].splice(index, 1);
                 p.isCheckd = false;
             }
 
@@ -1274,15 +1276,18 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
     //changed by #ortal&nofar# //for index
     $scope.linesToInvoiceSel = function () {
         if ($scope.idsToShowHC) {
-            ar = $scope.idsToShowHC;
-            return ar.length;
+            if ($scope.idsToShowHC[$scope.newDoc.Type]) {
+                ar = $scope.idsToShowHC[$scope.newDoc.Type];
+                return ar.length;
+            }
+     
         }
 
     };
 
     //changed by #ortal&nofar# //sending checked files to create invoice
     $scope.sendToInvoice = function () {
-        ar = $scope.idsToShowHC;
+        ar = $scope.idsToShowHC[$scope.newDoc.Type];
         $scope.showPage(11);
         $scope.setDocType(12);
 
@@ -1293,10 +1298,19 @@ app.expandControllerDocument = function ($scope, $http, $filter) {
         var total = 0;
         if (!$scope.idsToShowHC)
             return 0;
-        for (var i = 0; i < $scope.idsToShowHC.length; i++) {
-            total += $scope.idsToShowHC[i].Total;
+        else if (!$scope.idsToShowHC[$scope.newDoc.Type])
+            return 0;
+        for (var i = 0; i < $scope.idsToShowHC[$scope.newDoc.Type].length; i++) {
+            total += $scope.idsToShowHC[$scope.newDoc.Type][i].Total;
         }
         return total;
+    };
+    
+
+    $scope.getIdesToShow = function () {
+        if ($scope.idsToShowHC)
+            if ($scope.idsToShowHC[$scope.newDoc.Type])
+                return $scope.idsToShowHC[$scope.newDoc.Type];
     };
 
 }

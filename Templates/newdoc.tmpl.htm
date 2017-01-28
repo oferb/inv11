@@ -227,7 +227,8 @@
         </div>
             <!-- חשבונית מס מרוכזת --> 
             <!--// changed by ortal&nofar-->-->
-            <div class="docItemsTable" data-ng-show="newDoc.Type==12">
+      
+            <div class="docItemsTable" data-ng-show="newDoc.Type==12 || newDoc.Type==11">
                 <table style="margin-bottom:10px;width:100%">
                     <thead>
                         <tr>
@@ -235,10 +236,11 @@
                             <th>מס תעודת משלוח</th>
                             <th style="width:15%">סכום</th>
                             <th style="width:15%">תאריך</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-ng-repeat="p in idsToShowHC ">
+                        <tr data-ng-repeat="p in getIdesToShow()">
                             <td>{{p.Id}}</td>
                             <td>{{p.DocumentNumber}}</td>
                             <td>{{p.Total}}</td>

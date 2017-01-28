@@ -330,7 +330,49 @@
                                         <!--checkbox-->
                                         <td >
                                             <!--<input type="checkbox" data-ng-model="docCheckBox" data-ng-change="linesToInvoice(docCheckBox,p)" ng-checked="{{p.isCheckd}}">-->
-                                            <input type="checkbox" data-ng-model="docCheckBox" data-ng-if="p.DocumentType==11" data-ng-change="linesToInvoice(docCheckBox,p)" ng-checked="{{p.isCheckd}}">
+                                            <input type="checkbox" data-ng-model="docCheckBox" data-ng-if="p.DocumentType==11 " data-ng-change="linesToInvoice(docCheckBox,p)" ng-checked="{{p.isCheckd}}">
+                                        </td>
+                                        <td>{{p.Id}}</td>
+                                        <td>{{p.DocumentNumber}}</td>
+                                        <td>{{p.CompanyN}}</td>
+                                        <td>{{p.CustomerN}}</td>
+                                        <td>{{p.DateV}}</td>
+                                        <td>{{dueDate(p)}}</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-------------------------------->
+                <!-- comments -->
+                <!--changed by #ortal&nofar#-->
+                <!-- Shipping-->
+                <div class="row" data-ng-show="in([11])">
+                    <div class="form-group">
+                        <label for="textArea" class="col-md-2 control-label">תעודת משלוח</label>
+                        <!-- table -->
+                        <div style="min-height:430px;">
+                            <table class="table table-striped table-hover tm-grid" data-ng-show="filteredDocuments().length>0">
+                                <thead>
+                                    <tr>
+                                        <th style="width:30px; align-self:center;"><span title="בחר" align="center" class="glyphicon glyphicon-check"></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'Id')"><span data-ng-class="selectedCls(docSort,'Id')"></span><a href="#">מס</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'DocumentNumber')"><span data-ng-class="selectedCls(docSort,'DocumentNumber')"></span><a href="#">מס' סידורי</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'CompanyN')"><span data-ng-class="selectedCls(docSort,'CompanyN')"></span><a href="#">בית עסק</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'CustomerN')"><span data-ng-class="selectedCls(docSort,'CustomerN')"></span><a href="#">לקוח</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'Total')"><span data-ng-class="selectedCls(docSort,'Total')"></span><a href="#">סכום</a></span></th>
+                                        <th><span data-ng-click="changeSorting(docSort,'DateVal')"><span data-ng-class="selectedCls(docSort,'DateVal')"></span><a href="#">תאריך</a></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!------------------------------------------------------------------------->
+                                    <tr data-ng-repeat="p in filteredDocuments() | orderBy:docSort.column:docSort.descending | limitTo: pageSize : paging[3].from" data-ng-class="{'success':p.Id==newDoc.Id}">
+                                        <!--checkbox-->
+                                        <td>
+                                            <!--<input type="checkbox" data-ng-model="docCheckBox" data-ng-change="linesToInvoice(docCheckBox,p)" ng-checked="{{p.isCheckd}}">-->
+                                            <input type="checkbox" data-ng-model="docCheckBox2" data-ng-change="linesToInvoice(docCheckBox2,p)" ng-checked="{{p.isCheckd}}">
                                         </td>
                                         <td>{{p.Id}}</td>
                                         <td>{{p.DocumentNumber}}</td>
@@ -346,6 +388,7 @@
                 </div>
                 <!-------------------------------->
                 <!-- comments -->
+
                 <div class="row">
                     <div class="form-group">
                         <label for="textArea" class="col-xs-2 control-label">הערות</label>

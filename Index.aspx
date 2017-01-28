@@ -122,7 +122,7 @@
                                 cache: false,
                                 success: function (d) {
                                     scope.allUsers = JSON.parse(d);
-                                    console.log(scope.allUsers);
+                                    //console.log(scope.allUsers);
                                     scope.safeApply();
                                 },
                                 error: function (d) {
