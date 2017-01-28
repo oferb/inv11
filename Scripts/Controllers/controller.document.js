@@ -786,9 +786,7 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
             }
         }
 
-        for (var i = 0 ; i < $scope.filteredDocumentsObj.length; i++)
-            if ($scope.filteredDocumentsObj[i].Orders)
-                console.log(i + " : " + $scope.filteredDocumentsObj[i].Orders);
+
 
         return $scope.filteredDocumentsObj;
     }
@@ -890,7 +888,7 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
         //    || newVal.docType != oldVal.docType) && $scope.newDoc.Type > 8 && $scope.selectedPage != 11) //changed by ortal&nofar
         if ((newVal.docCompany != oldVal.docCompany || newVal.docCustomer != oldVal.docCustomer
               || newVal.docType != oldVal.docType) && $scope.newDoc.Type > 8
-              && $scope.selectedPage != 11 && $scope.selectedPage != 12) {
+              && $scope.newDoc.Type != 11 && $scope.newDoc.Type != 12) {
             $scope.isStatusChangable = false;
             //$scope.resetNewDocument();
             $scope.newDoc.Type = 1;
@@ -1259,6 +1257,7 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
 
     //changed by #ortal&nofar#
     $scope.linesToSC = function (value, p) {
+
         if (!$scope.idsToShowSC)
             $scope.idsToShowSC = [];
         if (value) {
@@ -1294,13 +1293,11 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
     //changed by #ortal&nofar#
     $scope.linesToInvoice = function (value, p) {
         //$scope.idsToShowHC = $scope.idsToShowHC;
-        console.log("$scope.idsToShowHC", $scope.idsToShowHC, "\nValue", value)
         if (!$scope.idsToShowHC)
             $scope.idsToShowHC = [];
         if (!$scope.idsToShowHC[$scope.newDoc.Type])
             $scope.idsToShowHC[$scope.newDoc.Type] = [];
         if (value) {
-            console.log("Entererd Value");
             $scope.idsToShowHC[$scope.newDoc.Type].push(p);
             p.isCheckd = true;
         }
@@ -1328,10 +1325,13 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
 
     //changed by #ortal&nofar# //sending checked files to create invoice
     $scope.sendToInvoice = function () {
-        console.log("sendToInvoice INIT newDOCType", newDoc)
         ar = $scope.idsToShowHC[$scope.newDoc.Type];
-        $scope.showPage(11);
-        $scope.setDocType(12);
+        if ($scope.newDoc.Type == 11)
+            $scope.showPage(12);
+        else if ($scope.newDoc.Typen == 8)
+              $scope.showPage(12);
+
+        //$scope.setDocType(12);
 
     };
 
@@ -1350,7 +1350,6 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
 
 
     $scope.getIdesToShow = function () {
-        console.log("getIdesToShow $scope.idsToShowHC", $scope.idsToShowHC);
         if ($scope.idsToShowHC)
             if ($scope.idsToShowHC[$scope.newDoc.Type])
                 return $scope.idsToShowHC[$scope.newDoc.Type];

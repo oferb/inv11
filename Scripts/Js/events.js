@@ -142,6 +142,7 @@ function LoadDocAuto() {
 
     $("#selType1, #selType2").on("change", function () {
         scope.search.docType = $(this).val();
+        scope.newDoc.Type = $(this).val();   
         scope.safeApply();
     });
 

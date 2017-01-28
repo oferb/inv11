@@ -285,7 +285,7 @@
                                 <li data-ng-click="setDocType(7)" data-ng-class="{'active':newDoc.Type==7}"><a href="#">הצעת מחיר</a></li>
                                 <li data-ng-click="setDocType(8)" data-ng-class="{'active':newDoc.Type==8}"><a href="#">הזמנה</a></li>
                                 <!-- changed by #ortal&nofar# -->
-                                <li data-ng-click="setDocType(12)" data-ng-class="{'active':newDoc.Type==9}"><a href="#">חשבונית מס מרוכזת</a></li>
+                                <li data-ng-click="setDocType(12)" data-ng-class="{'active':newDoc.Type==12}"><a href="#">חשבונית מס מרוכזת</a></li>
                                 <%------------------------------%>
                                 <li data-ng-click="setDocType(11)" data-ng-class="{'active':newDoc.Type==11}"><a href="#">תעודת משלוח</a></li>
                             </ul>
