@@ -229,6 +229,9 @@ public partial class tbUserDocument
     public string CustomerAStreet { get; set; }
     public string CustomerAIndex { get; set; }
     public Nullable<int> DocStatus { get; set; }
+    public Nullable<bool> isClosed { get; set; }
+    public Nullable<int> LinkedDocID { get; set; }
+    public Nullable<int> ParentDocID { get; set; }
 }
 
 public partial class vDocCompAndType

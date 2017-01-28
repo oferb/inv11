@@ -228,6 +228,9 @@ warning 6002: The table/view 'DBInvoice.dbo.tbBranches' does not have a primary 
           <Property Name="CustomerAStreet" Type="nvarchar" MaxLength="50" />
           <Property Name="CustomerAIndex" Type="nvarchar" MaxLength="20" />
           <Property Name="DocStatus" Type="int" />
+          <Property Name="isClosed" Type="bit" />
+          <Property Name="LinkedDocID" Type="int" />
+          <Property Name="ParentDocID" Type="int" />
         </EntityType>
         <EntityType Name="tbUsers">
           <Key>
@@ -548,6 +551,9 @@ warning 6002: The table/view 'DBInvoice.dbo.vDocCompAndType' does not have a pri
           <Property Name="CustomerAStreet" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="CustomerAIndex" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="DocStatus" Type="Int32" />
+          <Property Name="isClosed" Type="Boolean" />
+          <Property Name="LinkedDocID" Type="Int32" />
+          <Property Name="ParentDocID" Type="Int32" />
         </EntityType>
         <EntityType Name="tbBank">
           <Key>
@@ -786,6 +792,9 @@ warning 6002: The table/view 'DBInvoice.dbo.vDocCompAndType' does not have a pri
           <EntitySetMapping Name="tbUserDocuments">
             <EntityTypeMapping TypeName="DBInvoiceModel.tbUserDocument">
               <MappingFragment StoreEntitySet="tbUserDocuments">
+                <ScalarProperty Name="ParentDocID" ColumnName="ParentDocID" />
+                <ScalarProperty Name="LinkedDocID" ColumnName="LinkedDocID" />
+                <ScalarProperty Name="isClosed" ColumnName="isClosed" />
                 <ScalarProperty Name="DocStatus" ColumnName="DocStatus" />
                 <ScalarProperty Name="CustomerAIndex" ColumnName="CustomerAIndex" />
                 <ScalarProperty Name="CustomerAStreet" ColumnName="CustomerAStreet" />

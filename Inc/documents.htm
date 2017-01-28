@@ -117,13 +117,14 @@
                                 <td data-ng-if="search.docType==8 ||search.docType==11 || search.docType==12">
                                     <span class="glyphicon glyphicon-folder-close" style="color: grey;" title="סגור" data-ng-if="p.DocumentType==8 || p.DocumentType==11 ||p.DocumentType==12"
                                           data-ng-show="p.isClosed"></span><!--|| dtpin(p.documenttype,[5,7,8]-->
-                                    <a href="#" style="width:132px;" data-ng-click="getDocForHM(p.Id);" data-ng-show="!p.IsDraft && dtpIn(p.DocumentType,[1,2,3])" data-ng-if="p.DocumentType==11 ||p.DocumentType==12">
-
+                                    <a href="#" style="width:132px;" data-ng-click="getDocForHM(p.Id);" data-ng-show="!p.IsDraft && dtpIn(p.DocumentType,[1,2,3])" data-ng-if="p.DocumentType==8 ||p.DocumentType==11 ||p.DocumentType==12">
+                                       
                                     </a>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                   
                 </div>
                 <!-- paging -->
 
