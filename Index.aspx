@@ -99,66 +99,7 @@
                 <script>
                     var isAdmin = false;
                 </script>
-                <% if ((bool)Session["IsAdmin"])
-                   { %>
-                <div class="pull-right loaded" id="allUsers">
-                    <select id="selUserByAdmin" onchange="ChangeUser()" style="margin: 2px 10px; height: 18px">
-                        <option data-ng-selected="item.id==<%= Session["uid"] %>"
-                            data-ng-repeat="item in allUsers"
-                            value="{{item.id}}">{{item.name}}
-                        </option>
-                    </select>
-                    <script>
-                        isAdmin = true;
-                        // get all users list  
-                        function LoadUsersList() {
-                            $.ajax({
-                                type: "POST",
-                                contentType: "application/json; charset=utf-8",
-                                url: "Tasks.aspx",
-                                data: JSON.stringify({
-                                    tp: 800
-                                }),
-                                cache: false,
-                                success: function (d) {
-                                    scope.allUsers = JSON.parse(d);
-                                    //console.log(scope.allUsers);
-                                    scope.safeApply();
-                                },
-                                error: function (d) {
-                                    //
-                                }
-                            });
-                        }
 
-                        function ChangeUser() {
-                            if (!scope.isAllDataLoaded) return;
-                            $.ajax({
-                                type: "POST",
-                                contentType: "application/json; charset=utf-8",
-                                url: "Tasks.aspx",
-                                data: JSON.stringify({
-                                    tp: 801,
-                                    id: $("#selUserByAdmin").val() // scope.selectedByAdminUser.id
-                                }),
-                                cache: false,
-                                success: function (d) {
-                                    //if (d == "error") {
-                                    //    scope.loginError = true;
-                                    //    scope.$apply();
-                                    //} else {
-                                    if (d == "ok") location.href = "Index.aspx";
-                                    //}
-                                },
-                                error: function (d) {
-                                    //scope.loginError = true;
-                                    //scope.$apply();
-                                }
-                            });
-                        }
-                    </script>
-                </div>
-                <% } %>
                 <div class="pull-right inv-lg-r"><a href="index.aspx?tp=logout">יציא</a></div>
             </div>
         </div>

@@ -211,7 +211,7 @@ var app = angular.module('myApp', ['mwl.confirm','ngSanitize','ngCsv'])
                     var d = Enumerable.From($scope.userDocuments).Where(function (x) { return x.Id == $scope.newDoc.Id }).FirstOrDefault();
                     var bacTp = $scope.newDoc.Type;
                     //if (bacTp >= 9) return;  //changed by ortal&nofar
-                    if (bacTp >= 9 && d["DocumentType"] != 11 && d["DocumentType"] != 12 ) return; // for cancel docs
+                    if (bacTp >= 9 && bacTp != 11 && bacTp != 12) return; // for cancel docs
                     if (typeof (d) == "undefined" || d == null || $scope.newDoc.Id == null || d.DocumentNumber != 0) {
                         $scope.loadInitDoc();
                         $scope.newDoc.Type = typeof (bacTp) == "undefined" ? 1 : bacTp;

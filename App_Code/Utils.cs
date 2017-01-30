@@ -593,22 +593,35 @@ return db.tbUsers.Where(i => i.Email == mail && i.Password == password && (!i.Is
                         }
                     }
 
+                    // add to documentDocs by ortal&nofar
                     //update closed and related documents info //by ortal&nofar
                     if (rec.DocumentType == 11 || rec.DocumentType == 12)
                     {
                         int SubId = 0;
+                        decimal sumTotal = 0;
                         foreach (var d in documents)
                         {
+                            //var dc = new tbDocumentsDoc();
                             SubId = (d["Id"]);
-                            var toCloseDoc = db.tbUserDocuments.Where(i => i.Id == SubId).FirstOrDefault();
-                            toCloseDoc.isClosed = true;
-                            toCloseDoc.ParentDocID = rec.Id;
+                            var toCloseDocid = db.tbUserDocuments.Where(i => i.Id == SubId).FirstOrDefault();
+                            toCloseDocid.isClosed = true;
+
+                            rec.isParent = true;
+                            toCloseDocid.ParentDocID = rec.Id;
+                            sumTotal += (decimal)toCloseDocid.Total;
+                            //dc.ParentType = Convert.ToInt32(rec.DocumentType);
+                            //dc.Price = Convert.ToDouble(toCloseDocid.Total);
+                            //dc.DocId = toCloseDocid.Id;
+                            //dc.ParentDocId = rec.Id;
+                            //db.tbDocumentsDocs.Add(dc);
+                            
                         }
+                        rec.Total = Convert.ToDecimal(sumTotal);
 
                     }
 
                     // add to products
-                    foreach (var item in items)
+                     foreach (var item in items)
                     {
                         var pr = new tbDocumentProduct();
                         pr.Amount = Convert.ToDouble(item["Amount"]);
@@ -751,7 +764,7 @@ return db.tbUsers.Where(i => i.Email == mail && i.Password == password && (!i.Is
                     {
                         compRec.Last++;
                     }
-                    //db.SaveChanges();
+                    db.SaveChanges();
                     //newlast = (int)compRec.Last;
                     lastDoc.DocumentNumber = (int)compRec.Last;
                     db.SaveChanges();

@@ -501,6 +501,9 @@ function SaveAsPdf() {
 
                 $("#ifPDF").attr("src", "pdf1.aspx?id=" + doc.Id);
                 scope.tempMessage(0, "המסמך נשמר והונפק בהצלחה");
+                alert("המסמך נשמר והונפק בהצלחה!");
+                location.reload();
+                
             }
         },
         error: function (d) {

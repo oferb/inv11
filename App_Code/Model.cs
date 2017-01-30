@@ -137,6 +137,15 @@ public partial class tbDocumentProduct
     public string Info { get; set; }
 }
 
+public partial class tbDocumentsDoc
+{
+    public int Id { get; set; }
+    public Nullable<int> ParentType { get; set; }
+    public Nullable<int> DocId { get; set; }
+    public Nullable<int> ParentDocId { get; set; }
+    public Nullable<double> Price { get; set; }
+}
+
 public partial class tbDocumentType
 {
     public int Id { get; set; }
@@ -194,6 +203,7 @@ public partial class tbUserDocument
     public Nullable<int> UserID { get; set; }
     public Nullable<int> DocumentType { get; set; }
     public Nullable<int> DocumentNumber { get; set; }
+    public Nullable<System.DateTime> CreationDate { get; set; }
     public System.DateTime Date { get; set; }
     public Nullable<System.DateTime> DueDate { get; set; }
     public Nullable<int> CompanyID { get; set; }
@@ -223,14 +233,13 @@ public partial class tbUserDocument
     public Nullable<int> CancelID { get; set; }
     public string CancelMsg { get; set; }
     public Nullable<bool> IsCanceled { get; set; }
-    public Nullable<System.DateTime> CreationDate { get; set; }
     public string CustomerACountry { get; set; }
     public string CustomerACity { get; set; }
     public string CustomerAStreet { get; set; }
     public string CustomerAIndex { get; set; }
     public Nullable<int> DocStatus { get; set; }
     public Nullable<bool> isClosed { get; set; }
-    public Nullable<int> LinkedDocID { get; set; }
+    public Nullable<bool> isParent { get; set; }
     public Nullable<int> ParentDocID { get; set; }
 }
 
@@ -239,6 +248,17 @@ public partial class vDocCompAndType
     public int Id { get; set; }
     public Nullable<int> CompanyID { get; set; }
     public string IPCode { get; set; }
+}
+
+public partial class spGetDocNumeration_Result
+{
+    public Nullable<int> CompanyID { get; set; }
+    public Nullable<int> DocID { get; set; }
+    public Nullable<int> Start { get; set; }
+    public Nullable<int> Last { get; set; }
+    public string Name { get; set; }
+    public string IPCode { get; set; }
+    public int Id { get; set; }
 }
 
 public partial class spGetUserData_Result

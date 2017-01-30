@@ -225,11 +225,20 @@
                 </tfoot>
             </table>
         </div>
+
+        
             <!-- חשבונית מס מרוכזת --> 
-            <!--// changed by ortal&nofar-->-->
-      
-            <div class="docItemsTable" data-ng-show="newDoc.Type==12 || newDoc.Type==11">
-                <table style="margin-bottom:10px;width:100%">
+            <!--// changed by ortal&nofar-->
+            <div class="docItemsTable" data-ng-show="in([11,12])">
+                <div  class="docItemsTable" style="font-size:14px">
+                    <div class="alert alert-warning" data-ng-hide="search.docCustomer>0">
+                        <p style="text-align:center;font-size:18px;">נא לבחור לקוח</p>
+                    </div>
+                    <div class="alert alert-warning" data-ng-hide="idsToShowHC[newDoc.Type].length>0 || idsToShowHC[newDoc.Type].length!=null">
+                        <p style="text-align:center;font-size:18px;">נא לבחור מסמכים</p>
+                    </div>
+                </div> <!--אין נתונים-->
+                <table data-ng-show="idsToShowHC[newDoc.Type].length>0 || idsToShowHC[newDoc.Type].length!=null" style="margin-bottom:10px;width:100%"  >
                     <thead>
                         <tr>
                             <th style="width:5%">מס</th>
@@ -252,11 +261,10 @@
                         <tr>
                             <td></td>
                             <td class="tot-cell">סה"כ (ש"ח):</td>
-                            <td data-ng-if="newDoc.Type==12"> {{getSumOfSC()}}</td>
-                            <td data-ng-if="newDoc.Type==11"> {{getSumOfHC()}}</td>
+                            <td data-ng-if="newDoc.Type==12 || newDoc.Type==11 "> {{getSumOfShippingCertificates()}}</td>
                         </tr>
                     </tfoot>
-                </table>
+                </table> <!--הצגת הטבלה אם יש נתונים-->
             </div>
 
         <!-- comments -->

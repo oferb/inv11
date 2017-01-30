@@ -9,12 +9,12 @@ public partial class PreviewB : System.Web.UI.Page
 {
     public tbUserDocument Doc = new tbUserDocument();
     public tbCompany Company = new tbCompany();
-    public double Total1;
-    public double Total2;
+    public double Total1, Total2, Total3;
     public static DBInvoiceEntities db;
     public bool IsForPrint = false;
     public string DocOrigin = "מקור";
     public string CustAddress = "";
+    public string DocHCorSC = "";
     protected void Page_Load(object sender, EventArgs e)
     {
         var docId = (Request["id"]) == null ? 1 : Convert.ToInt32(Request["id"]);
@@ -52,18 +52,37 @@ public partial class PreviewB : System.Web.UI.Page
             }
 
             // visible elements
-            docItemsTable.Visible = Doc.DocumentType != 3 && Doc.DocumentType != 6 && (Doc.DocumentType < 9 || Doc.DocumentType == 11);
+            docItemsTable.Visible = Doc.DocumentType != 3 && Doc.DocumentType != 6 && (Doc.DocumentType < 9);
             paySubTitle.Visible = Doc.DocumentType == 2;
             docPayTable.Visible = Doc.DocumentType == 2 || Doc.DocumentType == 3 || Doc.DocumentType == 6;
             // changed by ortal&nofar
-            docHCItemsTable.Visible = Doc.DocumentType == 12;
+            docHCItemsTable.Visible = Doc.DocumentType == 12 || Doc.DocumentType == 11;
+            if (Doc.DocumentType == 12) DocHCorSC = "מספר תעודת משלוח";
+            else if (Doc.DocumentType == 11) DocHCorSC = "מספר הזמנה" ; 
+              
 
             // address
             CustAddress = (Doc.CustomerAddress == "" || Doc.CustomerAddress.Trim()==", ," ? "" : Doc.CustomerAddress + ",") +
                 (Doc.CustomerPhone == "" ? "" : Doc.CustomerPhone + ",") + Doc.CustomerMail;
-                
-                //<%=Doc.CustomerAddress %>, <%=Doc.CustomerPhone %>, <%=Doc.CustomerMail %>
 
+            //<%=Doc.CustomerAddress %>, <%=Doc.CustomerPhone %>, <%=Doc.CustomerMail %>
+
+            // Documents
+            var docs = db.tbUserDocuments.Where(i => i.ParentDocID == Doc.Id)
+                .Select(i => new
+                {
+                    DocumentId = (int)i.Id,
+                    DocNum = (int)i.DocumentNumber,
+                    Total = (double)i.Total,
+                    Date = (DateTime)i.Date,
+                })
+                .ToList();
+            if (docs.Count > 0)
+            {
+                Total3 = (double)db.tbUserDocuments.Where(i => (i.ParentDocID == Doc.Id) && (i.Total != null) ).Sum(i => i.Total);
+                repDocs.DataSource = docs;
+                repDocs.DataBind();
+            }
             // payments
             var pays = db.tbDocumentPayments.Where(i => i.DocID == Doc.Id)
                  .Select(i => new PayObject
@@ -88,6 +107,7 @@ public partial class PreviewB : System.Web.UI.Page
                 Total2 = (double)db.tbDocumentPayments.Where(i => i.DocID == Doc.Id).Sum(i => i.Total);
                 repPays.DataSource = pays;
                 repPays.DataBind();
+                
             }
 
             masBamakor.Visible = Doc.MasBaMakor > 0;

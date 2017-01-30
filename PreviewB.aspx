@@ -172,6 +172,43 @@
                                 </table>
 
                             </div>
+                            <%-- חשבונית מס מרוכזת --%>
+                           <div class="docItemsTable" runat="server" id="docHCItemsTable">
+                                <table style="margin-bottom: 10px; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 10%">מס</th>
+                                            <th><%= DocHCorSC %></th>
+                                            <th style="width: 15%">סכום</th>
+                                            <th style="width: 15%">תאריך</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <asp:Repeater runat="server" ID="repDocs">
+                                            <ItemTemplate>
+                                                <tr>
+                                                    <td><%#Eval("DocumentId")%></td>
+                                                    <td><%#Eval("DocNum")%></td>
+                                                    <td><%# string.Format("{0:n2}",Eval("Total"))%></td>
+                                                    <td><%# Convert.ToDateTime(Eval("Date")).ToString("dd/MM/yyyy")%></td>
+
+                                                </tr>
+                                            </ItemTemplate>
+                                        </asp:Repeater>
+                                        <tr>
+                                            <td colspan="4" height="15px" style="border-right:none; border-left:none; border-bottom:none; border-top:none;"></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <td class="tot-cell" colspan="2">סה"כ (ש"ח):</td>
+                                            <td><span><%= string.Format("{0:n2}",Total3) %></span></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                            </div>
                             <!-- קבלה -->
                             <div class="docItemsTable" runat="server" id="docPayTable">
                                 <div runat="server" id="paySubTitle">
@@ -226,59 +263,7 @@
                                 </table>
 
                             </div>
-                            <%-- חשבונית מס מרוכזת --%>
-                           <div class="docItemsTable" runat="server" id="docHCItemsTable">
-                                    <h2>מאפיני תשלום</h2>
-                                </div>
-                                <table style="margin-bottom: 10px; width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 10%">סוג</th>
-                                            <th>פרטים</th>
-                                            <th style="width: 15%">זמן פרעון</th>
-                                            <th style="width: 15%">סכום</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <asp:Repeater runat="server" ID="Repeater1">
-                                            <ItemTemplate>
-                                                <tr>
-                                                    <td><%#Eval("Type")%></td>
-                                                    <td><%#Eval("Description")%></td>
-                                                    <td><%# Convert.ToDateTime(Eval("Date")).ToString("dd/MM/yyyy")%></td>
-                                                    <td><%# string.Format("{0:n2}",Eval("Total"))%></td>
-                                                </tr>
-                                            </ItemTemplate>
-                                        </asp:Repeater>
-                                        <tr>
-                                            <td colspan="4" height="15px" style="border-right:none; border-left:none; border-bottom:none; border-top:none;"></td>
-                                        </tr>
-                                        <tr runat="server" id="Tr1">
-                                            <td></td>
-                                            <td colspan="2">סה"כ: 
-                                            </td>
-                                            <td><%= string.Format("{0:n2}",Total2) %></td>
-                                        </tr>
-                                        <tr runat="server" id="Tr2">
-                                            <td></td>
-                                            <td colspan="2">ניקוי מס במקור (<%= string.Format("{0:n2}",(double)Doc.MasBaMakor) %>%):
-                                            </td>
-                                            <td><%= string.Format("{0:n2}",(double)Doc.MasBaMakor*Total2/100) %></td>
-                                        </tr>
-                                        <tr runat="server" id="Tr3">
-                                            <td colspan="4" height="15px" style="border-right:none; border-left:none; border-bottom:none; border-top:none;"></td>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td></td>
-                                            <td class="tot-cell" colspan="2">סה"כ (ש"ח):</td>
-                                            <td><span><%= string.Format("{0:n2}",Total2*(1-(double)Doc.MasBaMakor/100)) %></span></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-
-                            </div>
+                            
 
                             <!-- cancel -->
                             <%--<% if (Doc.DocumentType >= 9 && Doc.DocumentType != 11) // changed by ortal&nofar--%>

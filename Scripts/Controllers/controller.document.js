@@ -32,6 +32,7 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
                 Code: doc.IPCode,
                 Date: new Date(),
                 DueDate: new Date(moment().add(30, 'days')),
+
                 Company: angular.copy(($scope.selectedCompany.Id == 0
                     || $scope.selectedCompany.Id == null)
                     ? $scope.userCompanies[0] : $scope.selectedCompany),
@@ -82,6 +83,7 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
 
 
     $scope.$watch('newDoc.Type', function (newVal, oldVal) {
+
         if (typeof (newVal) == "undefined") return;
         $scope.tempDocBac = angular.copy($scope.newDoc);
         $scope.newDoc.Title = $scope.getDocTitle(newVal);
@@ -581,7 +583,10 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
         }
         // create backup
         $scope.tempDocBac = angular.copy($scope.newDoc);
-        setTimeout(function () { $scope.editSelectedDoc = false; }, 1000);
+        setTimeout(function () {
+            console.log("tempDocBac 1000ms");
+            $scope.editSelectedDoc = false;
+        }, 1000);
     }
 
     $scope.getDateString = function (d) {
@@ -649,9 +654,6 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
 
         //}
 
-        setTimeout(function () {
-            $scope.filteredDocuments()
-        }, 2000);
     }
 
 
@@ -757,7 +759,7 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
                                     //&& ($scope.search.docIncCanceled || (s.DocumentType < 9 && (s.IsCanceled == null || !s.IsCanceled)));
                                 //changed by #ortal&nofar#
                                     && ($scope.search.docIncCanceled || ((s.DocumentType < 9 || s.DocumentType > 10) && (s.IsCanceled == null || !s.IsCanceled)))
-                                    && ($scope.search.docIncClosed || ((s.DocumentType < 9 || s.DocumentType > 10) && (s.isClosed == null || !s.isClosed))));
+                                   && ($scope.search.docIncClosed || ((s.DocumentType < 9 || s.DocumentType > 10) && (s.isClosed == null || !s.isClosed))));
                                 ///////////////////////////////////////////////////////////
                             }).ToArray();
                 $scope.fromRangeChange = false;
@@ -770,6 +772,7 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
 
         ////$scope.loadPaging("userDocuments");
 
+        //added by ortal&nofar
         //Work around - this method is called multiple times for no reason, will reset the Orders fields before each iteration
         for (var i = 0 ; i < $scope.filteredDocumentsObj.length; i++)
             if ($scope.filteredDocumentsObj[i].Orders)
@@ -807,7 +810,7 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
 
 
     $scope.filteredDocumentsByType = function (tp) {
-       // console.log("filteredDocumentsByType TP", tp)
+        // console.log("filteredDocumentsByType TP", tp)
         //if (!$scope.isDocFiltered()) {
         //    return $scope.userDocuments.length;
         //} else {
@@ -850,509 +853,520 @@ app.expandControllerDocument = function ($scope, $http, $filter, $timeout) {
 
     $scope.isStatusChangable = true;
     $scope.$watch('search', function (newVal, oldVal) {
-        if (!$scope.isStatusChangable) return; // when this watch must be disabled
-        if (newVal.docCompany != oldVal.docCompany || newVal.docCustomer != oldVal.docCustomer || newVal.docPeriod != oldVal.docPeriod) {
-            $scope.recalculateChartData();
-        }
-        if (newVal.docCompany != oldVal.docCompany) {
-            $scope.newDoc.Company = angular.copy(Enumerable.From($scope.userCompanies)
-                .Where(function (x) { return x.Id == newVal.docCompany }).FirstOrDefault());
-            $scope.selection.compId = newVal.docCompany;
-            if ($scope.newDoc.Type > 8) {
+        console.log("step1");
+        console.log("old val=", oldVal.docCustomer);
+        console.log("new val=", newVal.docCustomer);
+            if (!$scope.isStatusChangable) return; // when this watch must be disabled
+            if (newVal.docCompany != oldVal.docCompany || newVal.docCustomer != oldVal.docCustomer || newVal.docPeriod != oldVal.docPeriod) {
+                $scope.recalculateChartData();
+            }
+            console.log("step2");
+            console.log("old val=", oldVal.docCustomer);
+            console.log("new val=", newVal.docCustomer);
+            if (newVal.docCompany != oldVal.docCompany) {
+                $scope.newDoc.Company = angular.copy(Enumerable.From($scope.userCompanies)
+                    .Where(function (x) { return x.Id == newVal.docCompany }).FirstOrDefault());
+                $scope.selection.compId = newVal.docCompany;
+                if ($scope.newDoc.Type > 8) {
+                    $scope.newDoc.Type = 1;
+                    $scope.resetNewDocument();
+                }
+
+            }
+        // customers  ////////////////////////////////////// 
+            if (newVal.docCustomer != oldVal.docCustomer) {
+                $('#selCustomer1').selectpicker('val', newVal.docCustomer);
+                $('#selCustomer3').selectpicker('val', newVal.docCustomer);
+                $('#selCustomer4').selectpicker('val', newVal.docCustomer);
+                console.log("Step 3");
+                console.log("selcust2=");
+                
+                console.log("old val=", oldVal.docCustomer);
+                console.log("new val=", newVal.docCustomer);
+                
+                var cid = parseInt(newVal.docCustomer);
+                if (cid == 0) {
+                    $('#selCustomer2').selectpicker('deselectAll');
+                    $('#selCustomer2').selectpicker('val', null);
+                } else {
+                    $('#selCustomer2').selectpicker('val', cid);
+                }
+                
+                console.log("Step 4");
+
+                $scope.newDoc.Customer = angular.copy(Enumerable.From($scope.userCustomers)
+                    .Where(function (x) { return x.Id == cid }).FirstOrDefault());
+                $scope.selectedCustomer = angular.copy($scope.newDoc.Customer);
+
+                console.log("Step 5");
+                   
+            }
+            // document type 
+            if (newVal.docType != oldVal.docType) {
+                console.log("Step 6");
+                $('#selType1').selectpicker('val', newVal.docType);
+                console.log("Step 7");
+            }
+
+            //if ((newVal.docCompany != oldVal.docCompany || newVal.docCustomer != oldVal.docCustomer
+            //    || newVal.docType != oldVal.docType) && $scope.newDoc.Type > 8 && $scope.selectedPage != 11) //changed by ortal&nofar
+            if ((newVal.docCompany != oldVal.docCompany || newVal.docCustomer != oldVal.docCustomer
+                  || newVal.docType != oldVal.docType) && $scope.newDoc.Type > 8
+                  && $scope.newDoc.Type != 11 && $scope.newDoc.Type != 12) {
+                console.log("Step 8");
+                $scope.isStatusChangable = false;
+                //$scope.resetNewDocument();
                 $scope.newDoc.Type = 1;
-                $scope.resetNewDocument();
+                $scope.isStatusChangable = true;
             }
-        }
-        // customers  
-        if (newVal.docCustomer != oldVal.docCustomer) {
-            $('#selCustomer1').selectpicker('val', newVal.docCustomer);
-            $('#selCustomer3').selectpicker('val', newVal.docCustomer);
-            $('#selCustomer4').selectpicker('val', newVal.docCustomer);
-            var cid = parseInt(newVal.docCustomer);
-            if (cid == 0) {
-                $('#selCustomer2').selectpicker('deselectAll');
-            } else {
-                $('#selCustomer2').selectpicker('val', cid);
+
+            // date ranges
+            if (newVal.docPeriod != oldVal.docPeriod) {
+                $('#selDateRanges').selectpicker('val', newVal.docPeriod);
+
             }
-            $scope.newDoc.Customer = angular.copy(Enumerable.From($scope.userCustomers)
-               .Where(function (x) { return x.Id == cid }).FirstOrDefault());
-            $scope.selectedCustomer = angular.copy($scope.newDoc.Customer);
-
-        }
-        // document type 
-        if (newVal.docType != oldVal.docType) {
-            $('#selType1').selectpicker('val', newVal.docType);
-        }
-
-        //if ((newVal.docCompany != oldVal.docCompany || newVal.docCustomer != oldVal.docCustomer
-        //    || newVal.docType != oldVal.docType) && $scope.newDoc.Type > 8 && $scope.selectedPage != 11) //changed by ortal&nofar
-        if ((newVal.docCompany != oldVal.docCompany || newVal.docCustomer != oldVal.docCustomer
-              || newVal.docType != oldVal.docType) && $scope.newDoc.Type > 8
-              && $scope.newDoc.Type != 11 && $scope.newDoc.Type != 12) {
-            $scope.isStatusChangable = false;
-            //$scope.resetNewDocument();
-            $scope.newDoc.Type = 1;
-            $scope.isStatusChangable = true;
-        }
-
-        // date ranges
-        if (newVal.docPeriod != oldVal.docPeriod) {
-            $('#selDateRanges').selectpicker('val', newVal.docPeriod);
-
-        }
 
         /// temp       
-        $scope.loadPaging("userDocuments");
-    }, true);
+            console.log("Step 9");
+            $scope.loadPaging("userDocuments");
+        }, true);
+        
 
-    $scope.testItem = "";
+     
 
-    $scope.$watch('search.docCompany', function (newVal, oldVal) {
-        LoadDocProducts();
-        $scope.prepareCustomers();
-    }, true);
+        $scope.testItem = "";
 
-    //$scope.$watch('search.docCustomer', function (newVal, oldVal) {
-    //    $scope.recalculateChartData();
-    //}, true);
-    //$scope.$watch('search.docPeriod', function (newVal, oldVal) {
-    //    $scope.recalculateChartData();
-    //}, true);
+        $scope.$watch('search.docCompany', function (newVal, oldVal) {
+            console.log("942line");
+            console.log("old val=", oldVal.docCustomer);
+            console.log("new val=", newVal.docCustomer);
+            LoadDocProducts();
+            $scope.prepareCustomers();
+        }, true);
 
-    $scope.resetDocumentFilters = function () {
-        $scope.searchBac.docCompany = $scope.search.docCompany;
-        $scope.search = angular.copy($scope.searchBac);
-        $scope.resetDateRange();
-    }
+        //$scope.$watch('search.docCustomer', function (newVal, oldVal) {
+        //    $scope.recalculateChartData();
+        //}, true);
+        //$scope.$watch('search.docPeriod', function (newVal, oldVal) {
+        //    $scope.recalculateChartData();
+        //}, true);
 
-    $scope.isDocFiltered = function () {
-        var s = $scope.search;
-        var b = $scope.searchBac;
-        return s.docCat != b.docCat
-            //|| s.docCompany != b.docCompany
-            || s.docCustomer != b.docCustomer
-            || s.docKey != b.docKey
-            || s.docType != b.docType
-            || s.docIncCanceled != b.docIncCanceled
-            //changed by #ortal&&nofar#
-            || s.docIncClosed != b.docIncClosed
-            ///////
-            || !$scope.isInitRange;
-    }
-
-    // for different documents
-    $scope.in = function (ar) {
-        return ar.indexOf($scope.newDoc.Type) > -1;
-    }
-
-    $scope.dtpIn = function (tp, ar) {
-        return ar.indexOf(tp) > -1;
-    }
-
-
-    $scope.hidden = function (ar) {
-        return ar.indexOf($scope.newDoc.Type) == -1;
-    }
-
-
-
-    $scope.tempDocBac = null;
-    // if new doc is filled and save is allowed
-    // it may be extended to addittional constrains
-    // for example, user permissions
-    $scope.isDocReady = function () {
-        var isItem = true, isPay = true, isChanged = true;
-        if ($scope.in([1, 2, 4, 5, 7, 8])) {
-            isItem = $scope.hasSelectedItems();
+        $scope.resetDocumentFilters = function () {
+            $scope.searchBac.docCompany = $scope.search.docCompany;
+            $scope.search = angular.copy($scope.searchBac);
+            $scope.resetDateRange();
         }
-        if ($scope.in([2, 3, 6])) {
-            isPay = $scope.docPayments.length > 0;
+
+        $scope.isDocFiltered = function () {
+            var s = $scope.search;
+            var b = $scope.searchBac;
+            return s.docCat != b.docCat
+                //|| s.docCompany != b.docCompany
+                || s.docCustomer != b.docCustomer
+                || s.docKey != b.docKey
+                || s.docType != b.docType
+                || s.docIncCanceled != b.docIncCanceled
+                //changed by #ortal&&nofar#
+                || s.docIncClosed != b.docIncClosed
+                ///////
+                || !$scope.isInitRange;
         }
-        isChanged = JSON.stringify($scope.newDoc) != JSON.stringify($scope.tempDocBac);
-        return isItem && isPay && (isChanged || $scope.newDoc.Id == 0);
-    }
 
-    $scope.isDocFilled = function () {
-        var isItem = true, isPay = true;
-        if ($scope.in([1, 2, 4, 5, 7, 8])) {
-            isItem = $scope.hasSelectedItems();
+        // for different documents
+        $scope.in = function (ar) {
+            return ar.indexOf($scope.newDoc.Type) > -1;
         }
-        if ($scope.in([2, 3, 6])) {
-            isPay = $scope.docPayments.length > 0;
+
+        $scope.dtpIn = function (tp, ar) {
+            return ar.indexOf(tp) > -1;
         }
-        return isItem && isPay;
-    }
 
-    $scope.dueDate = function (p) {
-        if (p.DocumentType != 3 && p.DocumentType != 6) {
-            return p.DueDateV;
-        } else {
-            return "";
+
+        $scope.hidden = function (ar) {
+            return ar.indexOf($scope.newDoc.Type) == -1;
         }
-    }
-
-    $scope.hasLockedDoc = function () {
-        var compId = ($scope.selectedCompany.Id == 0 || $scope.selectedCompany.Id == null)
-           ? $scope.userCompanies[0].Id : $scope.selectedCompany.Id;
-        var locked = Enumerable
-              .From($scope.docConfig)
-              .Where(function (x) { return x.CompanyID == compId && x.Last > 0 })
-              .Count();
-        return locked > 0;
-    }
-
-    $scope.getDocNumbersTb = function () {
-        $http({
-            method: 'GET',
-            url: 'tasks.aspx?tp=502&nu=' + $scope.userCompanies[$scope.userCompanies.length - 1].Id
-        }).then(function successCallback(recs) {
-            //var recs = JSON.parse(rec);
-            $.each(recs.data, function (i, rec) {
-                $scope.docConfig.push(rec);
-            })
-            $scope.docConfigBac = angular.copy($scope.docConfig);
-            //console.log($scope.docConfig);
-        }, function errorCallback(response) {
-            console.log("error request");
-        });
-    }
-
-    $scope.cancelDoc = function (d) {
-        if (d.DocumentType == 4) {
-            $scope.newDoc.Type = 9;
-        } else {
-            $scope.newDoc.Type = 10;
-        }
-        $scope.loadSavedDocForEdit(d.Id, 1);
-        $scope.showPage(11);
-    }
-
-    $scope.isReadyForSave = function () {
-        if (!$scope.isDocFilled || !$scope.isDocReady || $scope.search.docCustomer == 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
 
-    $scope.getDocForH = function (d) {
-        var json = JSON.stringify({
-            tp: 207,
-            id: d
-        });
-        $http({
-            url: 'Tasks.aspx',
-            method: "POST",
-            data: json,
-            headers: {
-                'Content-type': 'application/json'
-            }//,
-        }).success(function (data, status, headers, config) {
-            window.open(data);
-        }).error(function (data, status, headers, config) {
-            //upload failed
-        });
-    }
 
-
-    $scope.getDocsZip = function () {
-        var docs = Enumerable.From($scope.filteredDocumentsObj)
-            .Where(function (s) { return !s.IsDraft })
-            .Select("$.Id")
-            .ToArray();
-        var json = JSON.stringify({
-            tp: 204,
-            data: docs
-        });
-        $http({
-            url: 'Tasks.aspx',
-            method: "POST",
-            data: json,
-            headers: {
-                'Content-type': 'application/json'
-            }//,
-            //responseType: 'arraybuffer'
-        }).success(function (data, status, headers, config) {
-            window.open(data);
-            //var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-            //var objectUrl = URL.createObjectURL(blob);
-            //window.open(objectUrl);
-        }).error(function (data, status, headers, config) {
-            //upload failed
-        });
-    }
-
-    $scope.getDocsU = function () {
-        var tps = [1, 2, 3, 4];
-        var docs = Enumerable.From($scope.filteredDocumentsObj)
-            .Where(function (s) { return !s.IsDraft && tps.indexOf(s.DocumentType) > -1; })
-            .Select("$.Id")
-            .ToArray();
-        var json = JSON.stringify({
-            tp: 206,
-            data: docs
-        });
-        $http({
-            url: 'Tasks.aspx',
-            method: "POST",
-            data: json,
-            headers: {
-                'Content-type': 'application/json'
-            }//,
-            //responseType: 'arraybuffer'
-        }).success(function (data, status, headers, config) {
-            window.open(data);
-            //var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-            //var objectUrl = URL.createObjectURL(blob);
-            //window.open(objectUrl);
-        }).error(function (data, status, headers, config) {
-            //upload failed
-        });
-    }
-
-
-    $scope.getUniFormatDoc = function (dates) {
-        var tps = [1, 2, 3, 4];
-        //var docs = Enumerable.From($scope.filteredDocumentsObj)
-        //    .Where(function (s) { return !s.IsDraft && tps.indexOf(s.DocumentType) > -1; })
-        //    .Select("$.Id")
-        //    .ToArray();
-        var json = JSON.stringify({
-            tp: 207,
-            data: dates
-        });
-        $http({
-            url: 'Tasks.aspx',
-            method: "POST",
-            data: json,
-            headers: {
-                'Content-type': 'application/json'
-            }//,
-            //responseType: 'arraybuffer'
-        }).success(function (data, status, headers, config) {
-            window.open(data);
-            //var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-            //var objectUrl = URL.createObjectURL(blob);
-            //window.open(objectUrl);
-        }).error(function (data, status, headers, config) {
-            //upload failed
-        });
-    }
-    ///////////changed #ortal&nofar# ////////////////////////////////
-    //show open Doc lines
-    $scope.DocListOpen = false;
-    //$scope.DocListOpenShipping = false;
-
-    $scope.openDocLines = function (object) {
-        //function
-        object.isClosed = !object.isClosed;
-        //(id == 9 ? $scope.DocListOpenInvoice = !$scope.DocListOpenInvoice : $scope.DocListOpenShipping = !$scope.DocListOpenShipping)
-    }
-    // send by mail
-    $scope.docToMail = {};
-    $scope.getdocToMail = function (p) {
-        $scope.docSentStatus = 0;
-        $("#textBody").val("");
-        $scope.docToMail = p;
-        var catN = 1; // temp for cat numeration
-        var cust = Enumerable.From($scope.userCustomersBac)
-            .Where(function (x) { return x.Id == p.CustomerID }).FirstOrDefault();
-        if (cust != null) $("#inputEmail").val(cust.CEmail);
-    }
-
-    $scope.docSendTo = "";
-    $scope.docSendBody = "";
-    $scope.docSentStatus = 0; //1 - ok, 2 - error, 0 - not sent yet
-    $scope.sendDoc = function () {
-        var json = JSON.stringify({
-            tp: 205,
-            data: {
-                to: $("#inputEmail").val(),
-                body: $("#textBody").val(),
-                doc: $scope.docToMail.Id,
-                subject: $scope.docToMail.DocumentN + ", " + "מס'" + " " + $scope.docToMail.DocumentNumber
+        $scope.tempDocBac = null;
+        // if new doc is filled and save is allowed
+        // it may be extended to addittional constrains
+        // for example, user permissions
+        $scope.isDocReady = function () {
+            var isItem = true, isPay = true, isChanged = true;
+            if ($scope.in([1, 2, 4, 5, 7, 8])) {
+                isItem = $scope.hasSelectedItems();
             }
-        });
-        $http({
-            url: 'Tasks.aspx',
-            method: "POST",
-            data: json,
-            headers: {
-                'Content-type': 'application/json'
-            }//,
-            //responseType: 'arraybuffer'
-        }).success(function (data, status, headers, config) {
-            //
-            if (data == "ok") {
-                $scope.docSentStatus = 1;
+            if ($scope.in([2, 3, 6])) {
+                isPay = $scope.docPayments.length > 0;
+            }
+            isChanged = JSON.stringify($scope.newDoc) != JSON.stringify($scope.tempDocBac);
+            return isItem && isPay && (isChanged || $scope.newDoc.Id == 0);
+        }
+
+        $scope.isDocFilled = function () {
+            var isItem = true, isPay = true;
+            if ($scope.in([1, 2, 4, 5, 7, 8])) {
+                isItem = $scope.hasSelectedItems();
+            }
+            if ($scope.in([2, 3, 6])) {
+                isPay = $scope.docPayments.length > 0;
+            }
+            return isItem && isPay;
+        }
+
+        $scope.dueDate = function (p) {
+            if (p.DocumentType != 3 && p.DocumentType != 6) {
+                return p.DueDateV;
             } else {
+                return "";
+            }
+        }
+
+        $scope.hasLockedDoc = function () {
+            var compId = ($scope.selectedCompany.Id == 0 || $scope.selectedCompany.Id == null)
+               ? $scope.userCompanies[0].Id : $scope.selectedCompany.Id;
+            var locked = Enumerable
+                  .From($scope.docConfig)
+                  .Where(function (x) { return x.CompanyID == compId && x.Last > 0 })
+                  .Count();
+            return locked > 0;
+        }
+
+        $scope.getDocNumbersTb = function () {
+            $http({
+                method: 'GET',
+                url: 'tasks.aspx?tp=502&nu=' + $scope.userCompanies[$scope.userCompanies.length - 1].Id
+            }).then(function successCallback(recs) {
+                //var recs = JSON.parse(rec);
+                $.each(recs.data, function (i, rec) {
+                    $scope.docConfig.push(rec);
+                })
+                $scope.docConfigBac = angular.copy($scope.docConfig);
+                //console.log($scope.docConfig);
+            }, function errorCallback(response) {
+                console.log("error request");
+            });
+        }
+
+        $scope.cancelDoc = function (d) {
+            if (d.DocumentType == 4) {
+                $scope.newDoc.Type = 9;
+            } else {
+                $scope.newDoc.Type = 10;
+            }
+            $scope.loadSavedDocForEdit(d.Id, 1);
+            $scope.showPage(11);
+        }
+
+        $scope.isReadyForSave = function () {
+            if (!$scope.isDocFilled || !$scope.isDocReady || $scope.search.docCustomer == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+
+        $scope.getDocForH = function (d) {
+            var json = JSON.stringify({
+                tp: 207,
+                id: d
+            });
+            $http({
+                url: 'Tasks.aspx',
+                method: "POST",
+                data: json,
+                headers: {
+                    'Content-type': 'application/json'
+                }//,
+            }).success(function (data, status, headers, config) {
+                window.open(data);
+            }).error(function (data, status, headers, config) {
+                //upload failed
+            });
+        }
+
+
+        $scope.getDocsZip = function () {
+            var docs = Enumerable.From($scope.filteredDocumentsObj)
+                .Where(function (s) { return !s.IsDraft })
+                .Select("$.Id")
+                .ToArray();
+            var json = JSON.stringify({
+                tp: 204,
+                data: docs
+            });
+            $http({
+                url: 'Tasks.aspx',
+                method: "POST",
+                data: json,
+                headers: {
+                    'Content-type': 'application/json'
+                }//,
+                //responseType: 'arraybuffer'
+            }).success(function (data, status, headers, config) {
+                window.open(data);
+                //var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                //var objectUrl = URL.createObjectURL(blob);
+                //window.open(objectUrl);
+            }).error(function (data, status, headers, config) {
+                //upload failed
+            });
+        }
+
+        $scope.getDocsU = function () {
+            var tps = [1, 2, 3, 4];
+            var docs = Enumerable.From($scope.filteredDocumentsObj)
+                .Where(function (s) { return !s.IsDraft && tps.indexOf(s.DocumentType) > -1; })
+                .Select("$.Id")
+                .ToArray();
+            var json = JSON.stringify({
+                tp: 206,
+                data: docs
+            });
+            $http({
+                url: 'Tasks.aspx',
+                method: "POST",
+                data: json,
+                headers: {
+                    'Content-type': 'application/json'
+                }//,
+                //responseType: 'arraybuffer'
+            }).success(function (data, status, headers, config) {
+                window.open(data);
+                //var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                //var objectUrl = URL.createObjectURL(blob);
+                //window.open(objectUrl);
+            }).error(function (data, status, headers, config) {
+                //upload failed
+            });
+        }
+
+
+        $scope.getUniFormatDoc = function (dates) {
+            var tps = [1, 2, 3, 4];
+            //var docs = Enumerable.From($scope.filteredDocumentsObj)
+            //    .Where(function (s) { return !s.IsDraft && tps.indexOf(s.DocumentType) > -1; })
+            //    .Select("$.Id")
+            //    .ToArray();
+            var json = JSON.stringify({
+                tp: 207,
+                data: dates
+            });
+            $http({
+                url: 'Tasks.aspx',
+                method: "POST",
+                data: json,
+                headers: {
+                    'Content-type': 'application/json'
+                }//,
+                //responseType: 'arraybuffer'
+            }).success(function (data, status, headers, config) {
+                window.open(data);
+                //var blob = new Blob([data], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+                //var objectUrl = URL.createObjectURL(blob);
+                //window.open(objectUrl);
+            }).error(function (data, status, headers, config) {
+                //upload failed
+            });
+        }
+        ///////////changed #ortal&nofar# ////////////////////////////////
+        //show open Doc lines
+        $scope.DocListOpen = false;
+        //$scope.DocListOpenShipping = false;
+
+        $scope.openDocLines = function (object) {
+            //function
+            object.isClosed = !object.isClosed;
+            //(id == 9 ? $scope.DocListOpenInvoice = !$scope.DocListOpenInvoice : $scope.DocListOpenShipping = !$scope.DocListOpenShipping)
+        }
+        // send by mail
+        $scope.docToMail = {};
+        $scope.getdocToMail = function (p) {
+            $scope.docSentStatus = 0;
+            $("#textBody").val("");
+            $scope.docToMail = p;
+            var catN = 1; // temp for cat numeration
+            var cust = Enumerable.From($scope.userCustomersBac)
+                .Where(function (x) { return x.Id == p.CustomerID }).FirstOrDefault();
+            if (cust != null) $("#inputEmail").val(cust.CEmail);
+        }
+
+        $scope.docSendTo = "";
+        $scope.docSendBody = "";
+        $scope.docSentStatus = 0; //1 - ok, 2 - error, 0 - not sent yet
+        $scope.sendDoc = function () {
+            var json = JSON.stringify({
+                tp: 205,
+                data: {
+                    to: $("#inputEmail").val(),
+                    body: $("#textBody").val(),
+                    doc: $scope.docToMail.Id,
+                    subject: $scope.docToMail.DocumentN + ", " + "מס'" + " " + $scope.docToMail.DocumentNumber
+                }
+            });
+            $http({
+                url: 'Tasks.aspx',
+                method: "POST",
+                data: json,
+                headers: {
+                    'Content-type': 'application/json'
+                }//,
+                //responseType: 'arraybuffer'
+            }).success(function (data, status, headers, config) {
+                //
+                if (data == "ok") {
+                    $scope.docSentStatus = 1;
+                } else {
+                    $scope.docSentStatus = 2;
+                }
+            }).error(function (data, status, headers, config) {
+                //upload failed
                 $scope.docSentStatus = 2;
-            }
-        }).error(function (data, status, headers, config) {
-            //upload failed
-            $scope.docSentStatus = 2;
-        });
-    }
-
-
-    //$scope.firstDate = moment("2015-01-01");
-    ////scope.lastDate = moment(); 
-    $scope.datesRange = {
-        create: "",
-
-        finish: ""
-    }; //
-
-
-    $('#dateModal').on('show.bs.modal', function (event) {
-
-        var modal = $(this);
-        $('#dpCreate').datetimepicker({
-            locale: 'he',
-            defaultDate: moment("2015-01-01"),
-
-            format: 'DD/MM/YYYY'
-        });
-        $("#dpCreate").on("dp.change", function (e) {
-            $scope.datesRange.create = e.date;
-            if ($scope.datesRange.create > $scope.datesRange.finish) {
-                //  var d = element.find("#dpFinish");
-                $("#dpCreate").data('DateTimePicker').date($scope.datesRange.create);
-            }
-
-        });
-        $('#dpFinish').datetimepicker({
-            locale: 'he',
-            defaultDate: moment(),
-
-            format: 'DD/MM/YYYY'
-        });
-        $("#dpFinish").on("dp.change", function (e) {
-            $scope.datesRange.finish = e.date;
-            if ($scope.datesRange.finish < $scope.datesRange.create) {
-                //  var d = element.find("#dpCreate").first();
-                $('#dpFinish').data('DateTimePicker').date($scope.datesRange.finish);
-            }
-        });
-
-    })
-
-    $scope.FinallizeDoc = function () // called right before sending the doc to the server
-    {
-        var test = $scope.userProducts;
-        //if ($scope.newDoc.Type == 11) {
-        if ($scope.newDoc.Type == 11 || $scope.newDoc.Type == 12) {
-            $scope.newDoc.Date = moment();
-            //$scope.newDoc.DueDate = "";
-        }
-    };
-
-    $scope.PostDocCreationUpdates = function (doc) // called right after adding the doc to the server
-    {
-        $scope.addNewDocItems(doc);
-    }
-
-
-
-    //changed by #ortal&nofar#
-    $scope.linesToSC = function (value, p) {
-
-        if (!$scope.idsToShowSC)
-            $scope.idsToShowSC = [];
-        if (value) {
-            $scope.idsToShowSC.push(p);
-            p.isCheckd = true;
-            $scope.idsToShowSC;
-        }
-        else {
-            index = $scope.idsToShowSC.indexOf(p);
-            if (index > -1) {
-                $scope.idsToShowSC.splice(index, 1);
-                p.isCheckd = false;
-            }
-
-        }
-    };
-    //changed by #ortal&nofar# //for index
-    $scope.linesToSCSel = function () {
-        if ($scope.idsToShowHC[$scope.newDoc.Type]) {
-            ar = $scope.idsToShowHC[$scope.newDoc.Type];
-            return ar.length;
+            });
         }
 
-    };
 
-    //changed by #ortal&nofar# //sending checked files to create invoice
-    //$scope.sendToSC = function () {
-    //    ar = $scope.idsToShowHC;
-    //    $scope.showPage(11);
-    //    $scope.setDocType(12);
+        //$scope.firstDate = moment("2015-01-01");
+        ////scope.lastDate = moment(); 
+        $scope.datesRange = {
+            create: "",
 
-    //};
-    //changed by #ortal&nofar#
-    $scope.linesToInvoice = function (value, p) {
-        //$scope.idsToShowHC = $scope.idsToShowHC;
-        if (!$scope.idsToShowHC)
+            finish: ""
+        }; //
+
+
+        $('#dateModal').on('show.bs.modal', function (event) {
+
+            var modal = $(this);
+            $('#dpCreate').datetimepicker({
+                locale: 'he',
+                defaultDate: moment("2015-01-01"),
+
+                format: 'DD/MM/YYYY'
+            });
+            $("#dpCreate").on("dp.change", function (e) {
+                $scope.datesRange.create = e.date;
+                if ($scope.datesRange.create > $scope.datesRange.finish) {
+                    //  var d = element.find("#dpFinish");
+                    $("#dpCreate").data('DateTimePicker').date($scope.datesRange.create);
+                }
+
+            });
+            $('#dpFinish').datetimepicker({
+                locale: 'he',
+                defaultDate: moment(),
+
+                format: 'DD/MM/YYYY'
+            });
+            $("#dpFinish").on("dp.change", function (e) {
+                $scope.datesRange.finish = e.date;
+                if ($scope.datesRange.finish < $scope.datesRange.create) {
+                    //  var d = element.find("#dpCreate").first();
+                    $('#dpFinish').data('DateTimePicker').date($scope.datesRange.finish);
+                }
+            });
+
+        })
+
+        $scope.FinallizeDoc = function () // called right before sending the doc to the server
+        {
+            var test = $scope.userProducts;
+            //if ($scope.newDoc.Type == 11) {
+            if ($scope.newDoc.Type == 11 || $scope.newDoc.Type == 12) {
+                $scope.newDoc.Date = moment();
+                //$scope.newDoc.DueDate = "";
+            }
+        };
+
+        $scope.PostDocCreationUpdates = function (doc) // called right after adding the doc to the server
+        {
+            $scope.addNewDocItems(doc);
+        }
+
+
+
+        //changed by #ortal&nofar# //sending checked files to create invoice
+        //$scope.sendToSC = function () {
+        //    ar = $scope.idsToShowHC;
+        //    $scope.showPage(11);
+        //    $scope.setDocType(12);
+
+        //};
+        //changed by #ortal&nofar#
+        $scope.linesToInvoice = function (value, p) {
+            //$scope.idsToShowHC = $scope.idsToShowHC;
+            if (!$scope.idsToShowHC)
+                $scope.idsToShowHC = [];
+            if (!$scope.idsToShowHC[$scope.newDoc.Type])
+                $scope.idsToShowHC[$scope.newDoc.Type] = [];
+            if (value) {
+                $scope.idsToShowHC[$scope.newDoc.Type].push(p);
+                p.isCheckd = true;
+            }
+            else {
+                console.log("IN ELSE");
+                index = $scope.idsToShowHC[$scope.newDoc.Type].indexOf(p);
+                if (index > -1) {
+                    $scope.idsToShowHC[$scope.newDoc.Type].splice(index, 1);
+                    p.isCheckd = false;
+                }
+
+            }
+        };
+        //changed by #ortal&nofar# //for index
+        $scope.linesToInvoiceSel = function () {
+            if ($scope.idsToShowHC) {
+                if ($scope.idsToShowHC[$scope.newDoc.Type]) {
+                    ar = $scope.idsToShowHC[$scope.newDoc.Type];
+                    return ar.length;
+                }
+
+            }
+
+        };
+
+        $scope.emptyIdsToShowHC = function () {
+
+            var cust = parseInt(document.getElementById("selCustomer2").value);
+            $scope.search.docCustomer = cust;
+            for (var i = 0 ; i < $scope.filteredDocumentsObj.length; i++) {
+                $scope.filteredDocumentsObj[i].isCheckd = false;
+            }
             $scope.idsToShowHC = [];
-        if (!$scope.idsToShowHC[$scope.newDoc.Type])
-            $scope.idsToShowHC[$scope.newDoc.Type] = [];
-        if (value) {
-            $scope.idsToShowHC[$scope.newDoc.Type].push(p);
-            p.isCheckd = true;
         }
-        else {
-            console.log("IN ELSE");
-            index = $scope.idsToShowHC[$scope.newDoc.Type].indexOf(p);
-            if (index > -1) {
-                $scope.idsToShowHC[$scope.newDoc.Type].splice(index, 1);
-                p.isCheckd = false;
+
+        //changed by #ortal&nofar# //sending checked files to create invoice
+        $scope.sendToInvoice = function () {
+            ar = $scope.idsToShowHC[$scope.newDoc.Type];
+            if ($scope.newDoc.Type == 11)
+                $scope.showPage(12);
+            else if ($scope.newDoc.Typen == 8)
+                $scope.showPage(12);
+
+            //$scope.setDocType(12);
+
+        };
+
+        //changed by #ortal&nofar#
+        $scope.getSumOfShippingCertificates = function () {
+            var total = 0;
+            if (!$scope.idsToShowHC)
+                return 0;
+            else if (!$scope.idsToShowHC[$scope.newDoc.Type])
+                return 0;
+            for (var i = 0; i < $scope.idsToShowHC[$scope.newDoc.Type].length; i++) {
+                total += $scope.idsToShowHC[$scope.newDoc.Type][i].Total;
             }
-
-        }
-    };
-    //changed by #ortal&nofar# //for index
-    $scope.linesToInvoiceSel = function () {
-        if ($scope.idsToShowHC) {
-            if ($scope.idsToShowHC[$scope.newDoc.Type]) {
-                ar = $scope.idsToShowHC[$scope.newDoc.Type];
-                return ar.length;
-            }
-
-        }
-
-    };
-
-    //changed by #ortal&nofar# //sending checked files to create invoice
-    $scope.sendToInvoice = function () {
-        ar = $scope.idsToShowHC[$scope.newDoc.Type];
-        if ($scope.newDoc.Type == 11)
-            $scope.showPage(12);
-        else if ($scope.newDoc.Typen == 8)
-              $scope.showPage(12);
-
-        //$scope.setDocType(12);
-
-    };
-
-    //changed by #ortal&nofar#
-    $scope.getSumOfShippingCertificates = function () {
-        var total = 0;
-        if (!$scope.idsToShowHC)
-            return 0;
-        else if (!$scope.idsToShowHC[$scope.newDoc.Type])
-            return 0;
-        for (var i = 0; i < $scope.idsToShowHC[$scope.newDoc.Type].length; i++) {
-            total += $scope.idsToShowHC[$scope.newDoc.Type][i].Total;
-        }
-        return total;
-    };
+            return total;
+        };
 
 
-    $scope.getIdesToShow = function () {
-        if ($scope.idsToShowHC)
-            if ($scope.idsToShowHC[$scope.newDoc.Type])
-                return $scope.idsToShowHC[$scope.newDoc.Type];
-    };
+        $scope.getIdesToShow = function () {
+            if ($scope.idsToShowHC)
+                if ($scope.idsToShowHC[$scope.newDoc.Type])
+                    return $scope.idsToShowHC[$scope.newDoc.Type];
+        };
 
-}
+    }

@@ -69,7 +69,9 @@ app.expandControllerUser = function ($scope, $http) {
                 var uDocs = $scope.prepareUserDocs(o.Table8);
                 $scope.userDocuments = angular.copy(uDocs);
                 $scope.userDocumentsBac = angular.copy(uDocs);
+                //$scope.showPage($scope.userDocuments.length > 0 ? 101 : 11);
                 $scope.showPage($scope.userDocuments.length > 0 ? 101 : 11);
+
                 //$scope.selectedPage = $scope.userDocuments.length > 0 ? 101 : 11;
 
                 // document products

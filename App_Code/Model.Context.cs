@@ -38,9 +38,10 @@ public partial class DBInvoiceEntities : DbContext
     public virtual DbSet<tbDocumentProduct> tbDocumentProducts { get; set; }
     public virtual DbSet<tbDocumentPayment> tbDocumentPayments { get; set; }
     public virtual DbSet<tbBranch> tbBranches { get; set; }
-    public virtual DbSet<tbUserDocument> tbUserDocuments { get; set; }
     public virtual DbSet<tbBank> tbBanks { get; set; }
     public virtual DbSet<vDocCompAndType> vDocCompAndTypes { get; set; }
+    public virtual DbSet<tbUserDocument> tbUserDocuments { get; set; }
+    public virtual DbSet<tbDocumentsDoc> tbDocumentsDocs { get; set; }
 
     public virtual ObjectResult<spGetUserData_Result> spGetUserData(Nullable<int> uid)
     {
@@ -49,5 +50,14 @@ public partial class DBInvoiceEntities : DbContext
             new ObjectParameter("uid", typeof(int));
 
         return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetUserData_Result>("spGetUserData", uidParameter);
+    }
+
+    public virtual ObjectResult<spGetDocNumeration_Result> spGetDocNumeration(Nullable<int> cid)
+    {
+        var cidParameter = cid.HasValue ?
+            new ObjectParameter("cid", cid) :
+            new ObjectParameter("cid", typeof(int));
+
+        return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDocNumeration_Result>("spGetDocNumeration", cidParameter);
     }
 }

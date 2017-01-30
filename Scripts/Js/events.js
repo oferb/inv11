@@ -81,36 +81,36 @@ function LoadAutoSelects() {
 function LoadCustomersAuto() {
     if (typeof (scope) == "undefined") return;
 
-    for (var j = 1; j <= 4; j++) {
-        $('#selCustomer' + j + " option").remove();
-        $('#selCustomer' + j)
-                .append($("<option></option>")
-                .attr("selected","selected")
-                .attr("value", 0)
-                .attr("title", "כל הלקוחות")
-                .text("כל הלקוחות"));
-        $('#selCustomer' + j).selectpicker('refresh');
-        $.each(scope.userCustomers, function (i, o) {
-            $('#selCustomer' + j)
-                .append($("<option></option>")
-                .attr("value", o.Id)
-                .attr("title", o.Name)
-                .text(o.Name));
-            $('#selCustomer' + j).selectpicker('refresh');
-        });
+            for (var j = 1; j <= 4; j++) {
+                $('#selCustomer' + j + " option").remove();
+                $('#selCustomer' + j)
+                        .append($("<option></option>")
+                        .attr("selected","selected")
+                        .attr("value", 0)
+                        .attr("title", "כל הלקוחות")
+                        .text("כל הלקוחות"));
+                $('#selCustomer' + j).selectpicker('refresh');
+                $.each(scope.userCustomers, function (i, o) {
+                    $('#selCustomer' + j)
+                        .append($("<option></option>")
+                        .attr("value", o.Id)
+                        .attr("title", o.Name)
+                        .text(o.Name));
+                    $('#selCustomer' + j).selectpicker('refresh');
+                });
 
-        $("#selCustomer" + j).on("change", function () {
-            scope.search.docCustomer = parseInt($(this).val());
-            scope.safeApply();
-        });
+            $("#selCustomer" + j).on("change", function () {
+                scope.search.docCustomer = parseInt($(this).val());
+               // scope.safeApply();
+            });
 
-        $('#selCustomer' + j).selectpicker({
-            style: 'btn-primary btn-sm',// 
-            width: j==2 ? '100%' : 160,
-            size: 11
-        });
+            $('#selCustomer' + j).selectpicker({
+                style: 'btn-primary btn-sm',//
+                width: j==2 ? '100%' : 160,
+                size: 11
+            });
 
-    }
+        }
     
 }
 
@@ -266,6 +266,7 @@ function LoadDocProducts() {
         //scope.search.docPeriod = $(this).val();
         scope.safeApply();
         $('#selProduct').selectpicker('deselectAll');
+        $('#selProduct').selectpicker('val', null);
 
     });
 
